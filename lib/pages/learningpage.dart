@@ -1,20 +1,23 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 
 class Learningpage extends StatelessWidget {
   const Learningpage({super.key});
   static const List verticallst = [
-    "assets/img/learnimg3.webp",
-    "assets/img/learnimage2.webp",
-    "assets/img/learnimag1.webp"
+    ["assets/img/learnimg3.webp", "NUMBERS", "(0-9)"],
+    ["assets/img/learnimage2.webp", "ALPHABETS", "(A-Z)"],
+    ["assets/img/learnimag1.webp", "WORDS", "eg.Hello, World"],
   ];
   static const List horizontallst = [
-    "assets/img/class1.webp",
-    "assets/img/learnimg3.webp",
-    "assets/img/learnimage2.webp",
-    "assets/img/learnimag1.webp",
-    "assets/img/learnimg3.webp",
-    "assets/img/learnimage2.webp",
-    "assets/img/learnimag1.webp"
+    "assets/img/class1.jpeg",
+    "assets/img/class2.jpeg",
+    "assets/img/class3.jpeg",
+    "assets/img/class4.jpeg",
+    "assets/img/class5.jpeg",
+    "assets/img/class6.jpeg",
+    "assets/img/class7.jpeg",
+    "assets/img/class8.jpeg",
   ];
 
   @override
@@ -36,21 +39,22 @@ class Learningpage extends StatelessWidget {
           SizedBox(
             height: 140,
             child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 itemCount: horizontallst.length,
                 itemBuilder: (context, ind) {
-                  return customhorizontalcard(horizontallst[ind]);
+                  return customhorizontalcard(horizontallst[ind], ind);
                 }),
           ),
           Expanded(
             child: ListView.builder(
-                padding: EdgeInsets.zero,
+                padding: const EdgeInsets.symmetric(vertical: 5),
                 shrinkWrap: true,
                 itemCount: verticallst.length,
                 itemBuilder: (context, ind) {
-                  return customverticalcard(verticallst[ind]);
+                  return customverticalcard(verticallst[ind][0],
+                      verticallst[ind][1], verticallst[ind][2]);
                 }),
           ),
         ],
@@ -58,43 +62,69 @@ class Learningpage extends StatelessWidget {
     );
   }
 
-  customverticalcard(imgurl) {
-    return Center(
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(50),
-            child: Container(
-                height: 250,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    border: Border.all()),
-                child: Image.asset(imgurl)),
-          ),
-          const Text("data")
-        ],
+  customverticalcard(imgurl, tittle, subtittle) {
+    return InkWell(
+      onTap: () {},
+      child: Center(
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                    height: 130,
+                    decoration: BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all()),
+                    child: Image.asset(imgurl)),
+              ),
+            ),
+            const SizedBox(
+              width: 15,
+            ),
+            Column(
+              children: [
+                Text(
+                  tittle,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 22),
+                ),
+                Text(subtittle)
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  customhorizontalcard(imgurl) {
-    return Center(
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 2.0),
-              child: Container(
-                  height: 100,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Image.asset(imgurl)),
+  customhorizontalcard(imgurl, ind) {
+    String level = (ind + 1).toString();
+    return InkWell(
+      onTap: () {},
+      child: Center(
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Container(
+                    height: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Image.asset(imgurl)),
+              ),
             ),
-          ),
-          const Text("data")
-        ],
+            Text(
+              "CLASS$level",
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            )
+          ],
+        ),
       ),
     );
   }

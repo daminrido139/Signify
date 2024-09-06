@@ -1,3 +1,0 @@
-0 hand open
-1 hand close
-2 nothing
