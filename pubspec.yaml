@@ -11,7 +11,8 @@ dependencies:
     sdk: flutter
   camera: ^0.11.0+2
   curved_navigation_bar: ^1.0.6
-  tflite_v2: ^1.0.0
+  screenshot: ^3.0.0
+  image: ^4.2.0
 
 dev_dependencies:
   flutter_test:
@@ -23,4 +24,4 @@ flutter:
 
   assets:
     - assets/img/
-    - assets/models/
+    # - assets/model/
