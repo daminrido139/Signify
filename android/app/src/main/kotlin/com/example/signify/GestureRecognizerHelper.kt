@@ -21,7 +21,7 @@ class GestureRecognizerHelper(
     fun setupGestureRecognizer() {
         // Set general recognition options, including number of used threads
         val baseOptionBuilder = BaseOptions.builder()
-        baseOptionBuilder.setDelegate(Delegate.CPU)
+        baseOptionBuilder.setDelegate(Delegate.GPU)
         baseOptionBuilder.setModelAssetPath("sign_ml.task")
 
         try {

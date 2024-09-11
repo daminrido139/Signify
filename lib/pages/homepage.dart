@@ -1,8 +1,6 @@
-import 'dart:typed_data';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:signify/services/common_services.dart';
 import 'package:signify/services/native_repo.dart';
 
 class Homepage extends StatefulWidget {
@@ -21,7 +19,6 @@ class _HomepageState extends State<Homepage> {
   bool switchingCamera = false;
   double screenWidth = 0;
   double screenHeight = 0;
-  Uint8List? myImage;
   late final ScreenshotController _screenshotController;
 
   void initCamera() async {
@@ -59,19 +56,14 @@ class _HomepageState extends State<Homepage> {
   }
 
   void processImage(CameraImage cameraImage) async {
-    //isModelBusy = true;
-    // final startTime = DateTime.now();
-    // myImage = await (await cameraController!.takePicture()).readAsBytes();
-    // final sec = DateTime.now().difference(startTime).inMilliseconds;
-    // print(sec);
-    //  myImage = CommonServices.convertYUV420toImage(cameraImage);
-
-    // if (myImage != null) {
-    //   //
-    //   label = await NativeRepo.processImage(myImage!);
-    //   setState(() {});
-    // }
-    // isModelBusy = false;
+    isModelBusy = true;
+    label = await NativeRepo.processImage(
+      cameraImage.planes.map((plane) => plane.bytes).toList(),
+      cameraImage.height,
+      cameraImage.width,
+    );
+    setState(() {});
+    isModelBusy = false;
   }
 
   @override
@@ -95,10 +87,6 @@ class _HomepageState extends State<Homepage> {
       body: Column(
         children: [
           _cameraPreview(),
-          if (myImage != null)
-            Expanded(
-              child: Image.memory(myImage!),
-            ),
           Expanded(
             child: Center(
               child: SelectableText(
