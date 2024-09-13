@@ -1,24 +1,11 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:signify/models/utility.dart';
+import 'package:signify/pages/subjects.dart';
 
 class Learningpage extends StatelessWidget {
   const Learningpage({super.key});
-  static const List verticallst = [
-    ["assets/img/learnimg3.webp", "NUMBERS", "(0-9)"],
-    ["assets/img/learnimage2.webp", "ALPHABETS", "(A-Z)"],
-    ["assets/img/learnimag1.webp", "WORDS", "(eg.World)"],
-  ];
-  static const List horizontallst = [
-    "assets/img/class1.jpeg",
-    "assets/img/class2.jpeg",
-    "assets/img/class3.jpeg",
-    "assets/img/class4.jpeg",
-    "assets/img/class5.jpeg",
-    "assets/img/class6.jpeg",
-    "assets/img/class7.jpeg",
-    "assets/img/class8.jpeg",
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +19,7 @@ class Learningpage extends StatelessWidget {
         leading: const SizedBox.shrink(),
         actions: [
           IconButton(
-            icon: Icon(Icons.more_vert),
+            icon: const Icon(Icons.more_vert),
             onPressed: () {},
           ),
         ],
@@ -51,22 +38,14 @@ class Learningpage extends StatelessWidget {
             childAspectRatio: 1,
             mainAxisSpacing: 15,
             crossAxisSpacing: 15),
-        itemCount: horizontallst.length,
+        itemCount: Utility.horizontallst.length,
         itemBuilder: (context, ind) {
-          return customhorizontalcard(horizontallst[ind], ind);
+          return customhorizontalcard(Utility.horizontallst[ind], ind, context);
         },
       ),
     );
   }
 
-  //  ListView.builder(
-  //               padding: const EdgeInsets.symmetric(vertical: 5),
-  //               shrinkWrap: true,
-  //               itemCount: verticallst.length,
-  //               itemBuilder: (context, ind) {
-  //                 return customverticalcard(verticallst[ind][0],
-  //                     verticallst[ind][1], verticallst[ind][2]);
-  //               }),
   // SizedBox(
   //   height: 140,
   //   child: ListView.builder(
@@ -78,58 +57,14 @@ class Learningpage extends StatelessWidget {
   //         return customhorizontalcard(horizontallst[ind], ind);
   //       }),
   // ),
-  customverticalcard(imgurl, tittle, subtittle) {
-    return InkWell(
-      onTap: () {},
-      child: Center(
-        child: Column(
-          children: [
-            Container(
-              color: Colors.grey.shade100,
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                          height: 100,
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all()),
-                          child: Image.asset(imgurl)),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        tittle,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 22),
-                      ),
-                      Text(subtittle)
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 5,
-            )
-          ],
-        ),
-      ),
-    );
-  }
 
-  customhorizontalcard(imgurl, ind) {
+  customhorizontalcard(imgurl, ind, BuildContext context) {
     String level = (ind + 1).toString();
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const Subjectspage()));
+      },
       child: Stack(
         children: [
           Container(
