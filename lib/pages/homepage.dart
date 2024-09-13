@@ -1,6 +1,7 @@
+import 'dart:typed_data';
 import 'package:camera/camera.dart';
+import 'package:image/image.dart' as im;
 import 'package:flutter/material.dart';
-import 'package:screenshot/screenshot.dart';
 import 'package:signify/services/native_repo.dart';
 
 class Homepage extends StatefulWidget {
@@ -19,7 +20,7 @@ class _HomepageState extends State<Homepage> {
   bool switchingCamera = false;
   double screenWidth = 0;
   double screenHeight = 0;
-  late final ScreenshotController _screenshotController;
+  int frame = 0;
 
   void initCamera() async {
     _availableCameras = await availableCameras();
@@ -42,8 +43,10 @@ class _HomepageState extends State<Homepage> {
   Future<void> setCameraDirection(CameraLensDirection direction) async {
     final CameraDescription cameraDescription =
         _availableCameras!.firstWhere((i) => i.lensDirection == direction);
-    cameraController =
-        CameraController(cameraDescription, ResolutionPreset.medium);
+    cameraController = CameraController(
+      cameraDescription,
+      ResolutionPreset.medium,
+    );
     await cameraController!.initialize();
     cameraController!.startImageStream((cameraImage) {
       if (isModelBusy) return;
@@ -55,13 +58,46 @@ class _HomepageState extends State<Homepage> {
     setState(() {});
   }
 
+  Uint8List _convertYPlaneToImage(CameraImage image) {
+    final yPlane = image.planes[0]; // Y plane (luminance)
+    final width = image.width;
+    final height = image.height;
+
+    // Create an Image from Y plane (grayscale)
+    final im.Image grayscaleImage = im.Image(width: height, height: width);
+
+    // Fill in pixel data using Y plane bytes
+    for (int y = 0; y < width; y++) {
+      for (int x = 0; x < height; x++) {
+        final luminance = yPlane.bytes[x * yPlane.bytesPerRow + y];
+        // Set the pixel color to the grayscale value
+        grayscaleImage.setPixel(height - x - 1, width - y - 1,
+            im.ColorInt32.rgb(luminance, luminance, luminance));
+      }
+    }
+
+    // Convert image to PNG format
+    final pngBytes = Uint8List.fromList(im.encodePng(grayscaleImage));
+    // Update the image
+    return pngBytes;
+  }
+
   void processImage(CameraImage cameraImage) async {
+    /////// frame logic ////////
+    /// runs once in 30 calls
+    if (frame == 10) {
+      frame = 0;
+    } else {
+      frame += 1;
+      return;
+    }
+    /////////////////////////////
     isModelBusy = true;
+
     label = await NativeRepo.processImage(
-      cameraImage.planes.map((plane) => plane.bytes).toList(),
-      cameraImage.height,
-      cameraImage.width,
+      _convertYPlaneToImage(cameraImage),
     );
+
     setState(() {});
     isModelBusy = false;
   }
@@ -69,7 +105,6 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     initCamera();
-    _screenshotController = ScreenshotController();
     super.initState();
   }
 
@@ -101,12 +136,12 @@ class _HomepageState extends State<Homepage> {
           ),
         ],
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   shape: const CircleBorder(),
-      //   backgroundColor: Colors.blue.shade300,
-      //   onPressed: () {},
-      //   child: const Icon(Icons.audiotrack),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
+        backgroundColor: Colors.blue.shade300,
+        onPressed: () {},
+        child: const Icon(Icons.audiotrack),
+      ),
     );
   }
 
@@ -123,17 +158,14 @@ class _HomepageState extends State<Homepage> {
         : ClipRRect(
             child: Stack(
               children: [
-                Screenshot(
-                  controller: _screenshotController,
-                  child: SizedOverflowBox(
-                    size: Size(screenWidth, screenHeight * 0.6),
-                    child: Transform.flip(
-                      flipX: (cameraController!.description.lensDirection ==
-                              CameraLensDirection.front)
-                          ? true
-                          : false,
-                      child: CameraPreview(cameraController!),
-                    ),
+                SizedOverflowBox(
+                  size: Size(screenWidth, screenHeight * 0.6),
+                  child: Transform.flip(
+                    flipX: (cameraController!.description.lensDirection ==
+                            CameraLensDirection.front)
+                        ? true
+                        : false,
+                    child: CameraPreview(cameraController!),
                   ),
                 ),
                 Positioned(
