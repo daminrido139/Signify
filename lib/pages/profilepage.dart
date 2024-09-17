@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_const
+
 import 'package:flutter/material.dart';
 
 class Profilepage extends StatelessWidget {
@@ -12,25 +14,28 @@ class Profilepage extends StatelessWidget {
             const SizedBox(
               height: 80,
             ),
-            const Center(
-              child: CircleAvatar(
-                radius: 60,
-                backgroundImage: AssetImage(
-                  "assets/img/profileimage.jpg",
-                ),
-              ),
+            customcontainer(context), // const Center(
+            //   child: CircleAvatar(
+            //     radius: 60,
+            //     backgroundImage: AssetImage(
+            //       "assets/img/profileimage.jpg",
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(
+            //   height: 15,
+            // ),
+            // ElevatedButton(
+            //     style: ElevatedButton.styleFrom(
+            //         backgroundColor: Colors.blue.shade100),
+            //     onPressed: () {},
+            //     child: const Text(
+            //       "Edit Profile",
+            //       style: TextStyle(color: Colors.black),
+            //     )),
+            SizedBox(
+              height: 10,
             ),
-            const SizedBox(
-              height: 15,
-            ),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue.shade100),
-                onPressed: () {},
-                child: const Text(
-                  "Edit Profile",
-                  style: TextStyle(color: Colors.black),
-                )),
             customlisttile(
                 "Profile",
                 const Icon(
@@ -56,9 +61,9 @@ class Profilepage extends StatelessWidget {
                   size: 30,
                 )),
             const SizedBox(
-              height: 70,
+              height: 30,
             ),
-            customlogout()
+            customlogout(context)
           ],
         ),
       ),
@@ -66,29 +71,148 @@ class Profilepage extends StatelessWidget {
   }
 
   Widget customlisttile(titlename, icon) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      child: ListTile(
-        leading: icon,
-        title: Text(titlename),
-        trailing: const Icon(Icons.arrow_forward_ios),
+    return ListTile(
+      minTileHeight: 80,
+      onTap: () {},
+      leading: icon,
+      title: Text(titlename),
+      trailing: const Icon(Icons.arrow_forward_ios),
+    );
+  }
+
+  Widget customlogout(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.pop(context);
+      },
+      child: Container(
+        height: 50,
+        width: 150,
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color.fromRGBO(228, 212, 156, 1), Color(0xffad9c00)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: const Center(
+            child: Text(
+          "Logout",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        )),
       ),
     );
   }
 
-  Widget customlogout() {
+  Widget customcontainer(BuildContext context) {
     return Container(
-      height: 50,
-      width: 150,
+      height: 240,
+      width: MediaQuery.of(context).size.width - 30,
       decoration: BoxDecoration(
-        color: Colors.red,
-        borderRadius: BorderRadius.circular(10),
+          gradient: const LinearGradient(
+            colors: [
+              Color.fromRGBO(228, 212, 156, 1),
+              Color.fromARGB(255, 233, 223, 190)
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+          borderRadius: BorderRadius.circular(15),
+          color: const Color.fromARGB(255, 253, 249, 227),
+          boxShadow: [
+            BoxShadow(
+                color:
+                    const Color.fromARGB(255, 241, 228, 190).withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 5)
+          ]),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 20,
+          ),
+          const Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  radius: 60,
+                  backgroundImage: AssetImage(
+                    "assets/img/profileimage.jpg",
+                  ),
+                ),
+              ),
+              const Column(
+                children: [
+                  SizedBox(
+                    height: 35,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      "Sachita R",
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 6),
+                    child: Text(
+                      "K.L.Institute For The Deaf",
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 290),
+                child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: Color(0xffad9c00)),
+                      minimumSize: const Size(150, 40),
+                      // foregroundColor: Colors.green
+                      backgroundColor: const Color.fromARGB(255, 236, 234, 234),
+                    ),
+                    onPressed: () {},
+                    child: const Text(
+                      "Share Profile",
+                      style: TextStyle(color: Colors.black),
+                    )),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 290),
+                child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: Color(0xffad9c00)),
+                      minimumSize: const Size(150, 40),
+                      // foregroundColor: Colors.green
+                      backgroundColor: Colors.blue[100],
+                    ),
+                    onPressed: () {},
+                    child: const Text(
+                      "Edit Profile",
+                      style: TextStyle(color: Colors.black),
+                    )),
+              ),
+            ],
+          ),
+        ],
       ),
-      child: const Center(
-          child: Text(
-        "Logout",
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-      )),
     );
   }
 }

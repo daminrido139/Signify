@@ -4,7 +4,6 @@ import 'package:signify/pages/assignmentpage.dart';
 import 'package:signify/pages/homepage.dart';
 import 'package:signify/pages/learningpage.dart';
 import 'package:signify/pages/profilepage.dart';
-import 'package:signify/pages/writtingpard.dart';
 
 class Commonpage extends StatefulWidget {
   const Commonpage({
@@ -18,9 +17,9 @@ class Commonpage extends StatefulWidget {
 class _HomepageState extends State<Commonpage> {
   int selectedPage = 1;
   final pages = const [
-    Learningpage(),
-    Homepage(),
     Assignmentpage(),
+    Homepage(),
+    Learningpage(),
     Profilepage(),
   ];
 
@@ -32,7 +31,7 @@ class _HomepageState extends State<Commonpage> {
       bottomNavigationBar: CurvedNavigationBar(
           index: selectedPage,
           height: 70,
-          color: Colors.blue.shade100,
+          color: const Color.fromARGB(255, 233, 223, 190),
           backgroundColor: Colors.transparent,
           animationDuration: const Duration(milliseconds: 300),
           onTap: (val) {
@@ -40,11 +39,23 @@ class _HomepageState extends State<Commonpage> {
               selectedPage = val;
             });
           },
-          items: const [
-            Icon(Icons.assessment),
-            Icon(Icons.home),
-            Icon(Icons.book),
-            Icon(Icons.person),
+          items: [
+            SizedBox(
+                width: 30,
+                height: 30,
+                child: Image.asset("assets/img/assignment.png")),
+            SizedBox(
+                width: 30,
+                height: 30,
+                child: Image.asset("assets/img/home (1).png")),
+            SizedBox(
+                width: 30,
+                height: 30,
+                child: Image.asset("assets/img/browser.png")),
+            SizedBox(
+                width: 40,
+                height: 40,
+                child: Image.asset("assets/img/man.png")),
           ]),
     );
   }

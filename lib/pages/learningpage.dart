@@ -11,7 +11,7 @@ class Learningpage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade100,
+        backgroundColor: Color.fromARGB(255, 233, 223, 190),
         elevation: 0,
         toolbarHeight: 50,
         leadingWidth: 30,
