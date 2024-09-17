@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:signify/pages/assignpost.dart';
+import 'package:signify/pages/chatpage.dart';
+import 'package:signify/pages/drawerpage.dart';
 import 'package:signify/pages/writtingpard.dart';
 
 class Assignmentpage extends StatefulWidget {
@@ -15,23 +17,37 @@ class Assignmentpage extends StatefulWidget {
 
 class _AssignmentpageState extends State<Assignmentpage> {
   int index = 0;
-
+  final GlobalKey<ScaffoldState> key = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: key,
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 233, 223, 190),
-          leading: const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              radius: 60,
-              backgroundImage: AssetImage(
-                "assets/img/profileimage.jpg",
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () {
+                key.currentState!.openDrawer();
+              },
+              child: const CircleAvatar(
+                radius: 60,
+                backgroundImage: AssetImage(
+                  "assets/img/profileimage.jpg",
+                ),
               ),
             ),
           ),
           title: const Text("Assignments"),
           actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Chatpage()));
+                },
+                icon: const Icon(Icons.message_outlined)),
             IconButton(
                 onPressed: () {
                   if (index == 0) {
@@ -48,10 +64,9 @@ class _AssignmentpageState extends State<Assignmentpage> {
                     Icons.book_online_outlined,
                   ),
                 )),
-            IconButton(
-                onPressed: () {}, icon: const Icon(Icons.more_vert_outlined)),
           ],
         ),
+        drawer: const Drawerpage(),
         body: Assignmentpage.pages[index]);
   }
 }
