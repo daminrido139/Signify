@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:screenshot/screenshot.dart';
-import 'package:signify/services/native_repo.dart';
+import 'package:signify/services/camera_services.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -14,12 +14,13 @@ class _HomepageState extends State<Homepage> {
   String label = "Listening for a Indian Sign...";
   String confidence = "";
   CameraController? cameraController;
-  bool isModelBusy = false;
   List<CameraDescription>? _availableCameras;
   bool switchingCamera = false;
   double screenWidth = 0;
   double screenHeight = 0;
-  late final ScreenshotController _screenshotController;
+  String timeTaken = '';
+  bool isRecording = false;
+  final List<CameraImage> recordFrames = [];
 
   void initCamera() async {
     _availableCameras = await availableCameras();
@@ -42,34 +43,27 @@ class _HomepageState extends State<Homepage> {
   Future<void> setCameraDirection(CameraLensDirection direction) async {
     final CameraDescription cameraDescription =
         _availableCameras!.firstWhere((i) => i.lensDirection == direction);
-    cameraController =
-        CameraController(cameraDescription, ResolutionPreset.medium);
+    cameraController = CameraController(
+      cameraDescription,
+      ResolutionPreset.low,
+    );
     await cameraController!.initialize();
-    cameraController!.startImageStream((cameraImage) {
-      if (isModelBusy) return;
-      processImage(cameraImage);
-    });
+    cameraController!.startImageStream(processImage);
     await Future.delayed(Durations.extralong2);
     switchingCamera = false;
 
     setState(() {});
   }
 
-  void processImage(CameraImage cameraImage) async {
-    isModelBusy = true;
-    label = await NativeRepo.processImage(
-      cameraImage.planes.map((plane) => plane.bytes).toList(),
-      cameraImage.height,
-      cameraImage.width,
-    );
-    setState(() {});
-    isModelBusy = false;
+  void processImage(CameraImage cameraImage) {
+    if (isRecording) {
+      recordFrames.add(cameraImage);
+    }
   }
 
   @override
   void initState() {
     initCamera();
-    _screenshotController = ScreenshotController();
     super.initState();
   }
 
@@ -101,12 +95,34 @@ class _HomepageState extends State<Homepage> {
           ),
         ],
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   shape: const CircleBorder(),
-      //   backgroundColor: Colors.blue.shade300,
-      //   onPressed: () {},
-      //   child: const Icon(Icons.audiotrack),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
+        backgroundColor: Colors.blue.shade300,
+        onPressed: () async {
+          if (isRecording) return;
+          recordFrames.clear();
+          setState(() {
+            isRecording = true;
+          });
+          await Future.delayed(const Duration(seconds: 10));
+          setState(() {
+            label = "loading...";
+            isRecording = false;
+          });
+          label = await compute(CameraServices.predictGesture, recordFrames);
+          setState(() {});
+        },
+        child: (isRecording)
+            ? const SizedBox(
+                width: 36,
+                height: 36,
+                child: CircularProgressIndicator(),
+              )
+            : const Icon(
+                Icons.play_arrow,
+                size: 36,
+              ),
+      ),
     );
   }
 
@@ -123,17 +139,14 @@ class _HomepageState extends State<Homepage> {
         : ClipRRect(
             child: Stack(
               children: [
-                Screenshot(
-                  controller: _screenshotController,
-                  child: SizedOverflowBox(
-                    size: Size(screenWidth, screenHeight * 0.6),
-                    child: Transform.flip(
-                      flipX: (cameraController!.description.lensDirection ==
-                              CameraLensDirection.front)
-                          ? true
-                          : false,
-                      child: CameraPreview(cameraController!),
-                    ),
+                SizedOverflowBox(
+                  size: Size(screenWidth, screenHeight * 0.6),
+                  child: Transform.flip(
+                    flipX: (cameraController!.description.lensDirection ==
+                            CameraLensDirection.front)
+                        ? true
+                        : false,
+                    child: CameraPreview(cameraController!),
                   ),
                 ),
                 Positioned(
