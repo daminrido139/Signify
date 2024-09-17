@@ -6,7 +6,7 @@ class Writtingpard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SignatureController _controller = SignatureController(
+    final SignatureController controller = SignatureController(
       penStrokeWidth: 5,
       penColor: Colors.red,
       exportBackgroundColor: Colors.blue,
@@ -15,18 +15,22 @@ class Writtingpard extends StatelessWidget {
     return Scaffold(
         body: Column(
       children: [
-        Container(
+        SizedBox(
+          height: 20,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Signature(
-            controller: _controller,
+            controller: controller,
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height - 170,
-            backgroundColor: Colors.blue.shade100,
+            height: MediaQuery.of(context).size.height - 270,
+            backgroundColor: const Color.fromARGB(255, 233, 223, 190),
           ),
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
           onPressed: () {
-            _controller.clear();
+            controller.clear();
           },
           child: const Text(
             "Clear",

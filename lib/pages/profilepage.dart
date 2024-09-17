@@ -33,7 +33,7 @@ class Profilepage extends StatelessWidget {
             //       "Edit Profile",
             //       style: TextStyle(color: Colors.black),
             //     )),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             customlisttile(
@@ -170,17 +170,17 @@ class Profilepage extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 290),
+                constraints: const BoxConstraints(maxWidth: 290),
                 child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: Color(0xffad9c00)),
+                      side: const BorderSide(color: Color(0xffad9c00)),
                       minimumSize: const Size(150, 40),
                       // foregroundColor: Colors.green
                       backgroundColor: const Color.fromARGB(255, 236, 234, 234),
@@ -195,10 +195,10 @@ class Profilepage extends StatelessWidget {
                 width: 10,
               ),
               ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 290),
+                constraints: const BoxConstraints(maxWidth: 290),
                 child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: Color(0xffad9c00)),
+                      side: const BorderSide(color: Color(0xffad9c00)),
                       minimumSize: const Size(150, 40),
                       // foregroundColor: Colors.green
                       backgroundColor: Colors.blue[100],

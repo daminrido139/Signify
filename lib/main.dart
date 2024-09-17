@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:signify/auth/loginpage.dart';
-import 'package:signify/pages/commonpage.dart';
 
 void main() {
   runApp(const MyApp());
