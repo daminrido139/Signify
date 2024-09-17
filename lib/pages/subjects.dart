@@ -10,7 +10,7 @@ class Subjectspage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Subjects'),
-        backgroundColor: Colors.blue.shade100,
+        backgroundColor: const Color.fromARGB(255, 233, 223, 190),
       ),
       body: ListView.builder(
           padding: const EdgeInsets.symmetric(vertical: 5),
