@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:signify/pages/commonpage.dart';
+import 'package:signify/auth/loginpage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const Commonpage(),
+      home: const Loginpage(),
     );
   }
 }
