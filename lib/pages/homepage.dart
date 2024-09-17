@@ -1,8 +1,7 @@
-import 'dart:typed_data';
 import 'package:camera/camera.dart';
-import 'package:image/image.dart' as im;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:signify/services/native_repo.dart';
+import 'package:signify/services/camera_services.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -15,12 +14,13 @@ class _HomepageState extends State<Homepage> {
   String label = "Listening for a Indian Sign...";
   String confidence = "";
   CameraController? cameraController;
-  bool isModelBusy = false;
   List<CameraDescription>? _availableCameras;
   bool switchingCamera = false;
   double screenWidth = 0;
   double screenHeight = 0;
-  int frame = 0;
+  String timeTaken = '';
+  bool isRecording = false;
+  final List<CameraImage> recordFrames = [];
 
   void initCamera() async {
     _availableCameras = await availableCameras();
@@ -45,61 +45,20 @@ class _HomepageState extends State<Homepage> {
         _availableCameras!.firstWhere((i) => i.lensDirection == direction);
     cameraController = CameraController(
       cameraDescription,
-      ResolutionPreset.medium,
+      ResolutionPreset.low,
     );
     await cameraController!.initialize();
-    cameraController!.startImageStream((cameraImage) {
-      if (isModelBusy) return;
-      processImage(cameraImage);
-    });
+    cameraController!.startImageStream(processImage);
     await Future.delayed(Durations.extralong2);
     switchingCamera = false;
 
     setState(() {});
   }
 
-  Uint8List _convertYPlaneToImage(CameraImage image) {
-    final yPlane = image.planes[0]; // Y plane (luminance)
-    final width = image.width;
-    final height = image.height;
-
-    // Create an Image from Y plane (grayscale)
-    final im.Image grayscaleImage = im.Image(width: height, height: width);
-
-    // Fill in pixel data using Y plane bytes
-    for (int y = 0; y < width; y++) {
-      for (int x = 0; x < height; x++) {
-        final luminance = yPlane.bytes[x * yPlane.bytesPerRow + y];
-        // Set the pixel color to the grayscale value
-        grayscaleImage.setPixel(height - x - 1, width - y - 1,
-            im.ColorInt32.rgb(luminance, luminance, luminance));
-      }
+  void processImage(CameraImage cameraImage) {
+    if (isRecording) {
+      recordFrames.add(cameraImage);
     }
-
-    // Convert image to PNG format
-    final pngBytes = Uint8List.fromList(im.encodePng(grayscaleImage));
-    // Update the image
-    return pngBytes;
-  }
-
-  void processImage(CameraImage cameraImage) async {
-    /////// frame logic ////////
-    /// runs once in 30 calls
-    if (frame == 10) {
-      frame = 0;
-    } else {
-      frame += 1;
-      return;
-    }
-    /////////////////////////////
-    isModelBusy = true;
-
-    label = await NativeRepo.processImage(
-      _convertYPlaneToImage(cameraImage),
-    );
-
-    setState(() {});
-    isModelBusy = false;
   }
 
   @override
@@ -139,8 +98,30 @@ class _HomepageState extends State<Homepage> {
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
         backgroundColor: Colors.blue.shade300,
-        onPressed: () {},
-        child: const Icon(Icons.audiotrack),
+        onPressed: () async {
+          if (isRecording) return;
+          recordFrames.clear();
+          setState(() {
+            isRecording = true;
+          });
+          await Future.delayed(const Duration(seconds: 10));
+          setState(() {
+            label = "loading...";
+            isRecording = false;
+          });
+          label = await compute(CameraServices.predictGesture, recordFrames);
+          setState(() {});
+        },
+        child: (isRecording)
+            ? const SizedBox(
+                width: 36,
+                height: 36,
+                child: CircularProgressIndicator(),
+              )
+            : const Icon(
+                Icons.play_arrow,
+                size: 36,
+              ),
       ),
     );
   }
