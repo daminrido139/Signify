@@ -1,6 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:signify/Student/auth/createaccount.dart';
 
 class EntryPage extends StatelessWidget {
   const EntryPage({super.key});
@@ -8,45 +9,127 @@ class EntryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 233, 223, 190),
+      backgroundColor: const Color.fromARGB(255, 0, 5, 18),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [customcontainer()],
+        children: [
+          const SizedBox(height: 70),
+          const GradientText(
+            "Leviosa",
+            style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            gradient: LinearGradient(
+              colors: [Color.fromRGBO(228, 212, 156, 1), Color(0xffad9c00)],
+            ),
+          ),
+          const SizedBox(height: 150),
+          const Text(
+            "Who's Login?",
+            style: TextStyle(
+              fontSize: 20,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 40),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              customcontainer("Student", () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Createaccount()));
+              }),
+              customcontainer("Teacher", () {}),
+            ],
+          ),
+          const Spacer(),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Made in India by 2024 :)",
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Color.fromARGB(255, 106, 104, 104),
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              CircleAvatar(
+                  radius: 25,
+                  backgroundImage: AssetImage(
+                    "assets/img/icon.jpeg",
+                  )),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+        ],
       ),
     );
   }
 
-  Widget customcontainer() {
+  Widget customcontainer(String name, ontap) {
     return Center(
-      child: Container(
-        height: 150,
-        width: 150,
-        child: Center(
-          child: const Text(
-            "Student",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-          ),
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          gradient: const LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              stops: [
-                0.1,
-                0.5,
-                0.7,
-                0.9
-              ],
-              colors: [
-                Color.fromRGBO(228, 247, 211, 1),
-                Color.fromARGB(255, 234, 240, 206),
-                Color.fromARGB(255, 243, 215, 197),
-                Color.fromARGB(255, 219, 228, 243)
-              ]),
-        ),
+      child: InkWell(
+        onTap: ontap,
+        child: Container(
+            height: 140,
+            width: 140,
+            decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color.fromRGBO(228, 212, 156, 1), Color(0xffad9c00)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                borderRadius: BorderRadius.circular(15),
+                color: const Color.fromARGB(255, 253, 249, 227),
+                boxShadow: [
+                  BoxShadow(
+                      color: const Color.fromARGB(255, 94, 93, 91)
+                          .withOpacity(0.5),
+                      spreadRadius: 10,
+                      blurRadius: 10)
+                ]),
+            child: Center(
+              child: Text(
+                name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                ),
+              ),
+            )),
       ),
+    );
+  }
+}
+
+class GradientText extends StatelessWidget {
+  const GradientText(
+    this.text, {
+    super.key,
+    required this.gradient,
+    this.style,
+  });
+
+  final String text;
+  final TextStyle? style;
+  final Gradient gradient;
+
+  @override
+  Widget build(BuildContext context) {
+    return ShaderMask(
+      blendMode: BlendMode.srcIn,
+      shaderCallback: (bounds) => gradient.createShader(
+        Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+      ),
+      child: Text(text, style: style),
     );
   }
 }
