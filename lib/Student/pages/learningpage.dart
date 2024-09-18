@@ -1,8 +1,8 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:signify/models/utility.dart';
-import 'package:signify/pages/subjects.dart';
+import 'package:signify/Student/models/utility.dart';
+import 'package:signify/Student/pages/subjects.dart';
 
 class Learningpage extends StatelessWidget {
   const Learningpage({super.key});

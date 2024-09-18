@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:signify/pages/individualchatpage.dart';
+import 'package:signify/Student/pages/individualchatpage.dart';
 
 class Chatpage extends StatelessWidget {
   const Chatpage({super.key});

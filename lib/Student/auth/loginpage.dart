@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:signify/pages/commonpage.dart';
+import 'package:signify/Student/pages/commonpage.dart';
 
 class Loginpage extends StatelessWidget {
   const Loginpage({super.key});
