@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:signature/signature.dart';
 
 class Writtingpard extends StatelessWidget {
-  const Writtingpard({super.key});
+  final double? height;
+  const Writtingpard({super.key, this.height});
 
   @override
   Widget build(BuildContext context) {
@@ -12,10 +13,13 @@ class Writtingpard extends StatelessWidget {
       exportBackgroundColor: Colors.blue,
     );
 
+    final screenHeight = height == null
+        ? (MediaQuery.of(context).size.height - 270)
+        : height! - 84;
     return Scaffold(
         body: Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
         Padding(
@@ -23,7 +27,7 @@ class Writtingpard extends StatelessWidget {
           child: Signature(
             controller: controller,
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height - 270,
+            height: screenHeight,
             backgroundColor: const Color.fromARGB(255, 233, 223, 190),
           ),
         ),
