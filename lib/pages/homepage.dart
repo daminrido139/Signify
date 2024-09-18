@@ -2,6 +2,8 @@ import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:signify/services/camera_services.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:translator/translator.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -12,6 +14,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   String label = "Listening for a Indian Sign...";
+  String gujarathi = "ભારતીય નિશાની સાંભળી રહ્યા છીએ...";
   String confidence = "";
   CameraController? cameraController;
   List<CameraDescription>? _availableCameras;
@@ -20,7 +23,9 @@ class _HomepageState extends State<Homepage> {
   double screenHeight = 0;
   String timeTaken = '';
   bool isRecording = false;
+  bool flash = true;
   final List<CameraImage> recordFrames = [];
+  GoogleTranslator translator = GoogleTranslator();
 
   void initCamera() async {
     _availableCameras = await availableCameras();
@@ -37,6 +42,39 @@ class _HomepageState extends State<Homepage> {
       setCameraDirection(CameraLensDirection.back);
     } else {
       setCameraDirection(CameraLensDirection.front);
+    }
+  }
+
+  Future talkToMe(String text) async {
+    // Create a tts object
+    FlutterTts flutterTts = FlutterTts();
+
+    // Set properties
+    flutterTts.setLanguage("en-US");
+    flutterTts.setVoice({"name": "Karen", "locale": "en-AU"});
+    flutterTts.setSpeechRate(0.6);
+    flutterTts.setPitch(1); // 0.5 - 1.5
+
+    // Speak
+    flutterTts.speak(text);
+  }
+
+  Future<void> toggleFlashlight() async {
+    if (cameraController!.description.lensDirection !=
+        CameraLensDirection.front) {
+      if (cameraController!.value.isInitialized) {
+        if (cameraController!.value.flashMode == FlashMode.off) {
+          await cameraController!.setFlashMode(FlashMode.torch);
+          setState(() {
+            flash = true;
+          });
+        } else {
+          await cameraController!.setFlashMode(FlashMode.off);
+          setState(() {
+            flash = false;
+          });
+        }
+      }
     }
   }
 
@@ -61,6 +99,13 @@ class _HomepageState extends State<Homepage> {
     }
   }
 
+  void trans(String txt) async {
+    gujarathi = await translator.translate(txt, to: 'gu').then((v) {
+      return v.toString();
+    });
+    setState(() {});
+  }
+
   @override
   void initState() {
     initCamera();
@@ -81,47 +126,82 @@ class _HomepageState extends State<Homepage> {
       body: Column(
         children: [
           _cameraPreview(),
-          Expanded(
-            child: Center(
-              child: SelectableText(
-                "Prediction : $label",
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+          const SizedBox(
+            height: 30,
           ),
+          isRecording == true
+              ? Center(
+                  child: SizedBox(
+                      height: 200,
+                      width: 200,
+                      child: Image.asset("assets/img/bot.gif")),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: Text(
+                        "English:",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 250, 158, 83)),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Center(
+                      child: SelectableText(
+                        "Prediction : $label",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: Text(
+                        "Gujarthi:",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 250, 158, 83)),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Center(
+                      child: SelectableText(
+                        "આગાહી : $gujarathi",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
-        backgroundColor: Colors.blue.shade300,
+        backgroundColor: const Color.fromARGB(255, 233, 223, 190),
         onPressed: () async {
-          if (isRecording) return;
-          recordFrames.clear();
-          setState(() {
-            isRecording = true;
-          });
-          await Future.delayed(const Duration(seconds: 10));
-          setState(() {
-            label = "loading...";
-            isRecording = false;
-          });
-          label = await compute(CameraServices.predictGesture, recordFrames);
-          setState(() {});
+          await talkToMe(label);
         },
-        child: (isRecording)
-            ? const SizedBox(
-                width: 36,
-                height: 36,
-                child: CircularProgressIndicator(),
-              )
-            : const Icon(
-                Icons.play_arrow,
-                size: 36,
-              ),
+        child: const Icon(
+          Icons.multitrack_audio_sharp,
+          size: 36,
+        ),
       ),
     );
   }
@@ -150,26 +230,159 @@ class _HomepageState extends State<Homepage> {
                   ),
                 ),
                 Positioned(
-                    bottom: 0,
-                    child: Container(
-                      height: 50,
-                      width: screenWidth,
-                      color: Colors.black26,
-                    )),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
+                  bottom: 15,
                   left: 0,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: () async {
+                      if (isRecording) return;
+                      recordFrames.clear();
+                      setState(() {
+                        isRecording = true;
+                      });
+                      await Future.delayed(const Duration(seconds: 2));
+                      setState(() {
+                        label = "loading...";
+                        trans("loading...");
+                        isRecording = false;
+                      });
+                      label = await compute(CameraServices.predictGesture, [
+                        recordFrames,
+                        cameraController!.description.lensDirection
+                      ]);
+                      setState(() {});
+                      trans(label);
+                      talkToMe(label);
+                    },
+                    child: (isRecording)
+                        ? const _StopRecordIcon(Duration(seconds: 2))
+                        : const _StartRecordIcon(),
+                  ),
+                ),
+                Positioned(
+                  bottom: 10,
+                  right: 50,
                   child: IconButton(
                     color: Colors.grey.shade100,
                     onPressed: toggleCameraDirection,
-                    icon: const Icon(
-                      Icons.flip_camera_ios,
+                    icon: Container(
+                      decoration: const ShapeDecoration(
+                        shape: CircleBorder(),
+                        color: Colors.black26,
+                      ),
+                      padding: const EdgeInsets.all(13),
+                      child: const Icon(
+                        Icons.flip_camera_ios,
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 10,
+                  left: 50,
+                  child: IconButton(
+                    color: Colors.grey.shade100,
+                    onPressed: toggleFlashlight,
+                    icon: Container(
+                      decoration: const ShapeDecoration(
+                        shape: CircleBorder(),
+                        color: Colors.black26,
+                      ),
+                      padding: const EdgeInsets.all(13),
+                      child: Icon(
+                        flash == false ? Icons.flash_off : Icons.flash_on,
+                      ),
                     ),
                   ),
                 )
               ],
             ),
           );
+  }
+}
+
+class _StartRecordIcon extends StatelessWidget {
+  const _StartRecordIcon();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 60,
+      width: 60,
+      decoration: const ShapeDecoration(
+        shape: CircleBorder(
+            side: BorderSide(
+          width: 5,
+          color: Colors.white,
+        )),
+        color: Colors.red,
+      ),
+    );
+  }
+}
+
+class _StopRecordIcon extends StatefulWidget {
+  const _StopRecordIcon(this.duration);
+  final Duration duration;
+
+  @override
+  State<_StopRecordIcon> createState() => __StopRecordIconState();
+}
+
+class __StopRecordIconState extends State<_StopRecordIcon>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this, duration: widget.duration);
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+          height: 60,
+          width: 60,
+          alignment: Alignment.center,
+          decoration: const ShapeDecoration(
+            shape: CircleBorder(),
+            color: Colors.white,
+          ),
+          child: Container(
+            height: 20,
+            width: 20,
+            decoration: ShapeDecoration(
+              color: Colors.red,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+          ),
+        ),
+        AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              return SizedBox.square(
+                dimension: 55,
+                child: CircularProgressIndicator(
+                  strokeWidth: 5,
+                  color: Colors.red,
+                  value: _controller.value,
+                ),
+              );
+            }),
+      ],
+    );
   }
 }

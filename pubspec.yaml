@@ -13,10 +13,12 @@ dependencies:
     sdk: flutter
   flutter_launcher_icons: ^0.13.1
   flutter_native_splash: ^2.4.1
+  flutter_tts: ^4.0.2
   http: ^1.2.2
   http_parser: ^4.0.2
   image: ^4.2.0
   signature: ^5.5.0
+  translator: 
   youtube_player_iframe: ^5.1.5
 
 dev_dependencies:

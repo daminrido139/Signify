@@ -15,7 +15,7 @@ class Loginpage extends StatelessWidget {
             ],
           ),
           Positioned(
-            top: 350,
+            top: MediaQuery.of(context).size.height * 0.36,
             child: Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
