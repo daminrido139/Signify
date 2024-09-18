@@ -1,9 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:signify/pages/assignmentpage.dart';
-import 'package:signify/pages/homepage.dart';
-import 'package:signify/pages/learningpage.dart';
-import 'package:signify/pages/profilepage.dart';
+import 'package:signify/Student/pages/assignmentpage.dart';
+import 'package:signify/Student/pages/homepage.dart';
+import 'package:signify/Student/pages/learningpage.dart';
+import 'package:signify/Student/pages/profilepage.dart';
 
 class Commonpage extends StatefulWidget {
   const Commonpage({

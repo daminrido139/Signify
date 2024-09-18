@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:signify/pages/assignpost.dart';
-import 'package:signify/pages/chatpage.dart';
-import 'package:signify/pages/drawerpage.dart';
-import 'package:signify/pages/writtingpard.dart';
+import 'package:signify/Student/pages/assignpost.dart';
+import 'package:signify/Student/pages/chatpage.dart';
+import 'package:signify/Student/pages/drawerpage.dart';
+import 'package:signify/Student/pages/writtingpard.dart';
 
 class Assignmentpage extends StatefulWidget {
   const Assignmentpage({super.key});

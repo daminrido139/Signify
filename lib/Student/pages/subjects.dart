@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:signify/models/utility.dart';
-import 'package:signify/pages/tutorialpage.dart';
+import 'package:signify/Student/models/utility.dart';
+import 'package:signify/Student/pages/tutorialpage.dart';
 
 class Subjectspage extends StatelessWidget {
   const Subjectspage({super.key});
