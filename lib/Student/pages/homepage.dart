@@ -26,6 +26,18 @@ class _HomepageState extends State<Homepage> {
   bool flash = true;
   final List<CameraImage> recordFrames = [];
   GoogleTranslator translator = GoogleTranslator();
+  List<String> lst = [
+    "Zero",
+    "one",
+    "Two",
+    "Three",
+    "Four",
+    "Five",
+    "Six",
+    "Seven",
+    "Eight",
+    "Nine"
+  ];
 
   void initCamera() async {
     _availableCameras = await availableCameras();
@@ -251,7 +263,7 @@ class _HomepageState extends State<Homepage> {
                         cameraController!.description.lensDirection
                       ]);
                       setState(() {});
-                      trans(label);
+                      trans(lst[int.parse(label)]);
                       talkToMe(label);
                     },
                     child: (isRecording)

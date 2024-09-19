@@ -156,8 +156,8 @@ class Loginpage extends StatelessWidget {
   Widget custombutton(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Commonpage()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const Commonpage()));
       },
       child: Container(
         height: 60,
