@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:signify/Student/auth/loginpage.dart';
-import 'package:signify/Student/pages/commonpage.dart';
 
 class Createaccount extends StatelessWidget {
   const Createaccount({super.key});

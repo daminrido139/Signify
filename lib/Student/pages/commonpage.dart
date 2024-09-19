@@ -41,20 +41,20 @@ class _HomepageState extends State<Commonpage> {
           },
           items: [
             SizedBox(
-                width: 30,
-                height: 30,
+                width: 25,
+                height: 25,
                 child: Image.asset("assets/img/assignment.png")),
             SizedBox(
-                width: 30,
-                height: 30,
+                width: 25,
+                height: 25,
                 child: Image.asset("assets/img/home (1).png")),
             SizedBox(
-                width: 30,
-                height: 30,
+                width: 25,
+                height: 25,
                 child: Image.asset("assets/img/browser.png")),
             SizedBox(
-                width: 40,
-                height: 40,
+                width: 35,
+                height: 35,
                 child: Image.asset("assets/img/man.png")),
           ]),
     );

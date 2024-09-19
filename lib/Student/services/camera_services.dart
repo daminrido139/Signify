@@ -114,7 +114,7 @@ class CameraServices {
         ? frontCameraConversion
         : backCameraConversion;
     String res = '';
-    final Uri url = Uri.parse('http://192.168.51.1:10000/upload');
+    final Uri url = Uri.parse('http://192.168.97.1:10000/upload');
 
     var request = http.MultipartRequest("POST", url);
 

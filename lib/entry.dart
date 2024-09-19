@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter/material.dart';
+
 import 'package:signify/Student/auth/createaccount.dart';
+import 'package:signify/Student/pages/commonpage.dart';
+import 'package:signify/Teacher/pages/commonpage.dart';
+import 'package:signify/Teacher/pages/home.dart';
 
 class EntryPage extends StatelessWidget {
   const EntryPage({super.key});
@@ -39,7 +41,12 @@ class EntryPage extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => const Createaccount()));
               }),
-              customcontainer("Teacher", () {}),
+              customcontainer("Teacher", () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CommonpageTeacher()));
+              }),
             ],
           ),
           const Spacer(),
