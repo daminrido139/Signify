@@ -14,7 +14,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   String label = "Listening for a Indian Sign...";
-  String gujarathi = "ભારતીય નિશાની સાંભળી રહ્યા છીએ...";
+  String gujarati = "ભારતીય નિશાની સાંભળી રહ્યા છીએ...";
   String confidence = "";
   CameraController? cameraController;
   List<CameraDescription>? _availableCameras;
@@ -24,6 +24,7 @@ class _HomepageState extends State<Homepage> {
   String timeTaken = '';
   bool isRecording = false;
   bool flash = true;
+  String selectedLang = "English";
   final List<CameraImage> recordFrames = [];
   GoogleTranslator translator = GoogleTranslator();
   List<String> lst = [
@@ -112,7 +113,7 @@ class _HomepageState extends State<Homepage> {
   }
 
   void trans(String txt) async {
-    gujarathi = await translator.translate(txt, to: 'gu').then((v) {
+    gujarati = await translator.translate(txt, to: 'gu').then((v) {
       return v.toString();
     });
     setState(() {});
@@ -139,7 +140,7 @@ class _HomepageState extends State<Homepage> {
         children: [
           _cameraPreview(),
           const SizedBox(
-            height: 30,
+            height: 15,
           ),
           isRecording == true
               ? Center(
@@ -151,69 +152,90 @@ class _HomepageState extends State<Homepage> {
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: Text(
-                        "English:",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 250, 158, 83)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.only(right: 2),
+                            height: 35,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: const Color(0xFFB6B1B1)),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            //alignment: Alignment.centerRight,
+                            child: DropdownButton(
+                              padding: const EdgeInsets.only(
+                                  left: 13, top: 6, bottom: 6, right: 8),
+                              underline: const SizedBox(),
+                              dropdownColor: Colors.white,
+                              value: selectedLang,
+                              iconSize: 19,
+                              borderRadius: BorderRadius.circular(20),
+                              icon: const Icon(Icons.keyboard_arrow_down),
+                              items: <String>["English", "Gujarti"]
+                                  .map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (val) {
+                                selectedLang = val!;
+                                setState(() {});
+                              },
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => talkToMe(label),
+                            child: Container(
+                              padding: const EdgeInsets.all(6),
+                              margin: const EdgeInsets.only(right: 10),
+                              decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color.fromARGB(255, 233, 223, 190)),
+                              child: const Icon(Icons.volume_up),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 15,
                     ),
-                    Center(
-                      child: SelectableText(
-                        "Prediction : $label",
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                    Container(
+                      height: screenHeight * 0.2,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 15),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                          border: Border.all(color: Colors.grey.shade300),
+                          borderRadius: BorderRadius.circular(5)),
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      child: SingleChildScrollView(
+                        child: SizedBox(
+                          child: Text(
+                            selectedLang == "English" ? label : gujarati,
+                            style: const TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.w500),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: Text(
-                        "Gujarthi:",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 250, 158, 83)),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Center(
-                      child: SelectableText(
-                        "આગાહી : $gujarathi",
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                    )
                   ],
                 ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        shape: const CircleBorder(),
-        backgroundColor: const Color.fromARGB(255, 233, 223, 190),
-        onPressed: () async {
-          await talkToMe(label);
-        },
-        child: const Icon(
-          Icons.multitrack_audio_sharp,
-          size: 36,
-        ),
       ),
     );
   }
@@ -253,15 +275,15 @@ class _HomepageState extends State<Homepage> {
                         isRecording = true;
                       });
                       await Future.delayed(const Duration(seconds: 2));
-                      setState(() {
-                        label = "loading...";
-                        trans("loading...");
-                        isRecording = false;
-                      });
-                      label = await compute(CameraServices.predictGesture, [
-                        recordFrames,
-                        cameraController!.description.lensDirection
-                      ]);
+                      try {
+                        label = await compute(CameraServices.predictGesture, [
+                          recordFrames,
+                          cameraController!.description.lensDirection
+                        ]);
+                      } catch (e) {
+                        label = "Turn on Internet Connection";
+                      }
+                      isRecording = false;
                       setState(() {});
                       trans(lst[int.parse(label)]);
                       talkToMe(label);
