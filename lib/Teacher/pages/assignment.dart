@@ -24,7 +24,7 @@ class AssignmentPageTeacher extends StatelessWidget {
                 height: 30,
                 width: 30,
                 child: Image.asset("assets/img/classroom.png")),
-            SizedBox(
+           const  SizedBox(
               width: 30,
             )
           ],

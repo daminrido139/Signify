@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:signify/Student/auth/createaccount.dart';
-import 'package:signify/Student/pages/commonpage.dart';
+
 import 'package:signify/Teacher/pages/commonpage.dart';
-import 'package:signify/Teacher/pages/home.dart';
 
 class EntryPage extends StatelessWidget {
   const EntryPage({super.key});
