@@ -52,7 +52,7 @@ class _DrawerpageState extends State<Drawerpage> {
                 xValueMapper: (ChartData data, _) => data.x,
                 yValueMapper: (ChartData data, _) => data.y)
           ])),
-          // customlogout(context)
+          customlogout(context)
         ],
       ),
     );
@@ -76,7 +76,7 @@ class _DrawerpageState extends State<Drawerpage> {
         ),
         child: const Center(
             child: Text(
-          "Logout",
+          "DOWNLOAD REPORT",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         )),
       ),

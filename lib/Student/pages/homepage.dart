@@ -136,6 +136,13 @@ class _HomepageState extends State<Homepage> {
     screenHeight = MediaQuery.sizeOf(context).height;
     screenWidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Sign To Text'),
+        backgroundColor: const Color.fromARGB(255, 233, 223, 190),
+        elevation: 0,
+        scrolledUnderElevation: 0,
+      ),
+      backgroundColor: const Color.fromARGB(255, 233, 223, 190),
       body: Column(
         children: [
           _cameraPreview(),
