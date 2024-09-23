@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:signify/Student/pages/assignpost.dart';
-import 'package:signify/Student/pages/chatpage.dart';
-import 'package:signify/Student/pages/drawerpage.dart';
+
 import 'package:signify/Student/pages/writtingpard.dart';
 
 class Assignmentpage extends StatefulWidget {
@@ -17,19 +16,16 @@ class Assignmentpage extends StatefulWidget {
 
 class _AssignmentpageState extends State<Assignmentpage> {
   int index = 0;
-  final GlobalKey<ScaffoldState> key = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: key,
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 233, 223, 190),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
             child: InkWell(
-              onTap: () {
-                key.currentState!.openDrawer();
-              },
+              onTap: () {},
               child: const CircleAvatar(
                 radius: 60,
                 backgroundImage: AssetImage(
@@ -38,16 +34,14 @@ class _AssignmentpageState extends State<Assignmentpage> {
               ),
             ),
           ),
-          title: const Text("Assignments"),
+          title: const Text(
+            "Assignments",
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
           actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Chatpage()));
-                },
-                icon: const Icon(Icons.message_outlined)),
             IconButton(
                 onPressed: () {
                   if (index == 0) {
@@ -66,7 +60,6 @@ class _AssignmentpageState extends State<Assignmentpage> {
                 )),
           ],
         ),
-        drawer: const Drawerpage(),
         body: Assignmentpage.pages[index]);
   }
 }
