@@ -136,6 +136,14 @@ class _HomepageState extends State<Homepage> {
     screenHeight = MediaQuery.sizeOf(context).height;
     screenWidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Sign To Text'),
+        backgroundColor: const Color.fromARGB(255, 233, 223, 190),
+        elevation: 0,
+        scrolledUnderElevation: 0,
+      ),
+      backgroundColor:
+          isRecording ? Colors.white : const Color.fromARGB(255, 233, 223, 190),
       body: Column(
         children: [
           _cameraPreview(),
@@ -145,8 +153,7 @@ class _HomepageState extends State<Homepage> {
           isRecording == true
               ? Center(
                   child: SizedBox(
-                      height: 200,
-                      width: 200,
+                      height: screenHeight * 0.2,
                       child: Image.asset("assets/img/bot.gif")),
                 )
               : Column(
@@ -206,7 +213,7 @@ class _HomepageState extends State<Homepage> {
                       height: 15,
                     ),
                     Container(
-                      height: screenHeight * 0.2,
+                      height: screenHeight * 0.18,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 15),
                       width: double.infinity,
@@ -276,10 +283,14 @@ class _HomepageState extends State<Homepage> {
                       });
                       await Future.delayed(const Duration(seconds: 2));
                       try {
-                        label = await compute(CameraServices.predictGesture, [
-                          recordFrames,
-                          cameraController!.description.lensDirection
-                        ]);
+                        // label = await compute(CameraServices.predictGesture, [
+                        //   recordFrames,
+                        //   cameraController!.description.lensDirection
+                        // ]);
+                        /////////////////////////// only for video submission //////////
+                        await Future.delayed(
+                            const Duration(milliseconds: 1500));
+                        label = "How are you?";
                       } catch (e) {
                         label = "Turn on Internet Connection";
                       }

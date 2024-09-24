@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:signify/HR/Work.dart';
+import 'package:signify/Parent/Work.dart';
 
 import 'package:signify/Student/auth/createaccount.dart';
-import 'package:signify/Student/pages/commonpage.dart';
+
 import 'package:signify/Teacher/pages/commonpage.dart';
-import 'package:signify/Teacher/pages/home.dart';
 
 class EntryPage extends StatelessWidget {
   const EntryPage({super.key});
@@ -22,7 +23,7 @@ class EntryPage extends StatelessWidget {
               colors: [Color.fromRGBO(228, 212, 156, 1), Color(0xffad9c00)],
             ),
           ),
-          const SizedBox(height: 150),
+          const SizedBox(height: 130),
           const Text(
             "Who's Login?",
             style: TextStyle(
@@ -46,6 +47,25 @@ class EntryPage extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const CommonpageTeacher()));
+              }),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              customcontainer("Parent", () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const WorkPage()));
+              }),
+              customcontainer("General/Hr", () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const WorkHrPage()));
               }),
             ],
           ),

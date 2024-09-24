@@ -14,7 +14,7 @@ class _CalendarTeacherState extends State<CalendarTeacher> {
 
   @override
   Widget build(BuildContext context) {
-    List<CalendarEventData> _events = [
+    List<CalendarEventData> events = [
       CalendarEventData(
         date: _now,
         title: "Project meeting",
@@ -23,7 +23,7 @@ class _CalendarTeacherState extends State<CalendarTeacher> {
         endTime: DateTime(_now.year, _now.month, _now.day, 22),
       ),
       CalendarEventData(
-        date: _now.add(Duration(days: 1)),
+        date: _now.add(const Duration(days: 1)),
         startTime: DateTime(_now.year, _now.month, _now.day, 18),
         endTime: DateTime(_now.year, _now.month, _now.day, 19),
         title: "Wedding anniversary",
@@ -37,53 +37,53 @@ class _CalendarTeacherState extends State<CalendarTeacher> {
         description: "Go to football tournament.",
       ),
       CalendarEventData(
-        date: _now.add(Duration(days: 3)),
+        date: _now.add(const Duration(days: 3)),
         startTime: DateTime(
-            _now.add(Duration(days: 3)).year,
-            _now.add(Duration(days: 3)).month,
-            _now.add(Duration(days: 3)).day,
+            _now.add(const Duration(days: 3)).year,
+            _now.add(const Duration(days: 3)).month,
+            _now.add(const Duration(days: 3)).day,
             10),
         endTime: DateTime(
-            _now.add(Duration(days: 3)).year,
-            _now.add(Duration(days: 3)).month,
-            _now.add(Duration(days: 3)).day,
+            _now.add(const Duration(days: 3)).year,
+            _now.add(const Duration(days: 3)).month,
+            _now.add(const Duration(days: 3)).day,
             14),
         title: "Sprint Meeting.",
         description: "Last day of project submission for last year.",
       ),
       CalendarEventData(
-        date: _now.subtract(Duration(days: 2)),
+        date: _now.subtract(const Duration(days: 2)),
         startTime: DateTime(
-            _now.subtract(Duration(days: 2)).year,
-            _now.subtract(Duration(days: 2)).month,
-            _now.subtract(Duration(days: 2)).day,
+            _now.subtract(const Duration(days: 2)).year,
+            _now.subtract(const Duration(days: 2)).month,
+            _now.subtract(const Duration(days: 2)).day,
             14),
         endTime: DateTime(
-            _now.subtract(Duration(days: 2)).year,
-            _now.subtract(Duration(days: 2)).month,
-            _now.subtract(Duration(days: 2)).day,
+            _now.subtract(const Duration(days: 2)).year,
+            _now.subtract(const Duration(days: 2)).month,
+            _now.subtract(const Duration(days: 2)).day,
             16),
         title: "Team Meeting",
         description: "Team Meeting",
       ),
       CalendarEventData(
-        date: _now.subtract(Duration(days: 2)),
+        date: _now.subtract(const Duration(days: 2)),
         startTime: DateTime(
-            _now.subtract(Duration(days: 2)).year,
-            _now.subtract(Duration(days: 2)).month,
-            _now.subtract(Duration(days: 2)).day,
+            _now.subtract(const Duration(days: 2)).year,
+            _now.subtract(const Duration(days: 2)).month,
+            _now.subtract(const Duration(days: 2)).day,
             10),
         endTime: DateTime(
-            _now.subtract(Duration(days: 2)).year,
-            _now.subtract(Duration(days: 2)).month,
-            _now.subtract(Duration(days: 2)).day,
+            _now.subtract(const Duration(days: 2)).year,
+            _now.subtract(const Duration(days: 2)).month,
+            _now.subtract(const Duration(days: 2)).day,
             12),
         title: "Chemistry Viva",
         description: "Today is Joe's birthday.",
       ),
     ];
     return CalendarControllerProvider(
-        controller: EventController()..addAll(_events),
+        controller: EventController()..addAll(events),
         child: Scaffold(
           body: MonthView(
             headerBuilder: (date) => const SizedBox(),
@@ -93,7 +93,7 @@ class _CalendarTeacherState extends State<CalendarTeacher> {
             }),
           ),
           appBar: AppBar(
-            title: Text("November - 01 -2024 "),
+            title: const Text("November - 01 -2024 "),
             centerTitle: true,
             backgroundColor: const Color.fromARGB(255, 243, 227, 173),
           ),
