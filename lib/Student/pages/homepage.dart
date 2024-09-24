@@ -139,8 +139,6 @@ class _HomepageState extends State<Homepage> {
       appBar: AppBar(
         title: const Text('Sign To Text'),
         backgroundColor: const Color.fromARGB(255, 233, 223, 190),
-        elevation: 0,
-        scrolledUnderElevation: 0,
       ),
       backgroundColor: const Color.fromARGB(255, 233, 223, 190),
       body: Column(
