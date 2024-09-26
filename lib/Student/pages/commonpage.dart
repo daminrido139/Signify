@@ -16,7 +16,7 @@ class Commonpage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Commonpage> {
-  int selectedPage = 1;
+  int selectedPage = 0;
   final pages = const [
     Chatpage(),
     Assignmentpage(),

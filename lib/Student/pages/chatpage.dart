@@ -4,6 +4,7 @@ import 'package:signify/Student/pages/homepage.dart';
 import 'package:signify/Student/pages/individualchatpage.dart';
 import 'package:signify/Student/pages/texttosign.dart';
 import 'package:signify/entry.dart';
+import 'package:signify/leviosaai.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'dart:math' as math;
 
@@ -162,10 +163,12 @@ class _ChatpageState extends State<Chatpage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: const Color.fromARGB(255, 243, 227, 173),
-        child: IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
-      ),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => ChatScreen()));
+          },
+          backgroundColor: const Color.fromARGB(255, 243, 227, 173),
+          child: const Icon(Icons.add)),
     );
   }
 
