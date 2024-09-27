@@ -1,3 +1,2 @@
-# signify
-
-A new Flutter project.
+# Leviosa 
+A Learning app for Deaf and Mute students
