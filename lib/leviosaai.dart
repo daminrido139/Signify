@@ -57,14 +57,21 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  _fetchGeminiAIResponse(String userInput) async {
-    final model = GenerativeModel(
-      model: 'gemini-1.5-flash',
-      apiKey: 'AIzaSyAfCKcnsK08BZ_ddwm2KPvuUdvzJ5lqBkA',
-    );
+  static final model = GenerativeModel(
+    model: 'gemini-1.5-flash',
+    apiKey: 'AIzaSyAfCKcnsK08BZ_ddwm2KPvuUdvzJ5lqBkA',
+  );
+  final chat = model.startChat(history: [
+    Content.text(
+        'You are a Chat bot, your name is Leviosa, a helpful and friendly learning assistant especially for deaf and mute students. Your goal is to provide educational explanations based on the user'
+        "s request.")
+  ]);
 
-    final response = await model.generateContent([Content.text(userInput)]);
-    return response.text;
+  _fetchGeminiAIResponse(String userInput) async {
+    final response = await chat.sendMessage(
+      Content.text(userInput),
+    );
+    return response.text ?? "Try again";
   }
 
   @override

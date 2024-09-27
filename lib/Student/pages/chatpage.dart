@@ -163,12 +163,17 @@ class _ChatpageState extends State<Chatpage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => ChatScreen()));
-          },
-          backgroundColor: const Color.fromARGB(255, 243, 227, 173),
-          child: const Icon(Icons.add)),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => ChatScreen()));
+        },
+        backgroundColor: const Color.fromARGB(255, 243, 227, 173),
+        child: SizedBox(
+          width: 30,
+          height: 30,
+          child: Image.asset("assets/img/chatbot_15320513.png"),
+        ),
+      ),
     );
   }
 
