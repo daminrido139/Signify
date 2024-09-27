@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:signify/entry.dart';
 
 void main() {
+  // Gemini.init(
+  //     apiKey: const String.fromEnvironment(
+  //         'AIzaSyAfCKcnsK08BZ_ddwm2KPvuUdvzJ5lqBkA'),
+  //     enableDebugging: true);
   runApp(const MyApp());
 }
 

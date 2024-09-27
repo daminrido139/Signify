@@ -19,41 +19,43 @@ class _DrawerpageState extends State<Drawerpage> {
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: const Color.fromARGB(255, 233, 223, 190),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 45,
-          ),
-          const CircleAvatar(
-            radius: 50,
-            backgroundImage: AssetImage("assets/img/profileimage.jpg"),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          const Text(
-            "Sachita R",
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(
-              height: 100,
-              width: 150,
-              child: Image.asset("assets/img/star.png")),
-          const Text(
-            "Performance",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          Center(
-              child: SfCircularChart(series: <CircularSeries>[
-            // Renders doughnut chart
-            DoughnutSeries<ChartData, String>(
-                dataSource: chartData,
-                pointColorMapper: (ChartData data, _) => data.color,
-                xValueMapper: (ChartData data, _) => data.x,
-                yValueMapper: (ChartData data, _) => data.y)
-          ])),
-          customlogout(context)
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 45,
+            ),
+            const CircleAvatar(
+              radius: 50,
+              backgroundImage: AssetImage("assets/img/profileimage.jpg"),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            const Text(
+              "Sachita R",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+                height: 100,
+                width: 150,
+                child: Image.asset("assets/img/star.png")),
+            const Text(
+              "Performance",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            Center(
+                child: SfCircularChart(series: <CircularSeries>[
+              // Renders doughnut chart
+              DoughnutSeries<ChartData, String>(
+                  dataSource: chartData,
+                  pointColorMapper: (ChartData data, _) => data.color,
+                  xValueMapper: (ChartData data, _) => data.x,
+                  yValueMapper: (ChartData data, _) => data.y)
+            ])),
+            customlogout(context)
+          ],
+        ),
       ),
     );
   }
