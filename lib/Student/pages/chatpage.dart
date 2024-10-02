@@ -62,14 +62,14 @@ class _ChatpageState extends State<Chatpage> {
           IconButton(
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Texttosign()));
+                  MaterialPageRoute(builder: (context) => const Texttosign()));
             },
             icon: const Icon(
               Icons.text_fields_outlined,
               color: Color.fromRGBO(228, 212, 156, 1),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 20,
           ),
           InkWell(

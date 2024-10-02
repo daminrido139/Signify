@@ -22,8 +22,11 @@ dependencies:
   google_generative_ai: ^0.4.6
   http: ^1.2.2
   http_parser: ^4.0.2
+  provider: ^6.1.2
+
   image: ^4.2.0
   signature: ^5.5.0
+  speech_to_text: ^7.0.0
   syncfusion_flutter_charts: ^27.1.48
   translator: 
   youtube_player_iframe: ^5.1.5

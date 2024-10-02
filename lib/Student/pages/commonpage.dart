@@ -2,9 +2,9 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:signify/Student/pages/assignmentpage.dart';
 import 'package:signify/Student/pages/chatpage.dart';
-import 'package:signify/Student/pages/homepage.dart';
 import 'package:signify/Student/pages/learningpage.dart';
 import 'package:signify/Student/pages/profilepage.dart';
+import 'package:signify/Student/pages/speechtotext.dart';
 
 class Commonpage extends StatefulWidget {
   const Commonpage({
@@ -19,6 +19,7 @@ class _HomepageState extends State<Commonpage> {
   int selectedPage = 0;
   final pages = const [
     Chatpage(),
+    // Speechtotext(),
     Assignmentpage(),
     Learningpage(),
     Profilepage(),
@@ -71,7 +72,7 @@ class _HomepageState extends State<Commonpage> {
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
                       width: 25,
-                      height: 25,
+                      height: 20,
                       child: Image.asset("assets/img/assignment.png")),
                 ),
                 selectedPage == 1 ? const SizedBox() : const Text("Assignment")
