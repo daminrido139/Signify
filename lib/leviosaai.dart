@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:provider/provider.dart';
@@ -8,8 +6,10 @@ import 'package:signify/Student/models/imageai.dart';
 import 'package:signify/entry.dart';
 
 class ChatScreen extends StatefulWidget {
+  const ChatScreen({super.key});
+
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
@@ -24,7 +24,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _controller.dispose();
   }
@@ -255,7 +254,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   duration: const Duration(milliseconds: 200),
                   child: frame != null
                       ? child
-                      : SizedBox(
+                      : const SizedBox(
                           height: 60,
                           width: 60,
                           child: CircularProgressIndicator(strokeWidth: 6),

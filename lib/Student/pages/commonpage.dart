@@ -4,7 +4,6 @@ import 'package:signify/Student/pages/assignmentpage.dart';
 import 'package:signify/Student/pages/chatpage.dart';
 import 'package:signify/Student/pages/learningpage.dart';
 import 'package:signify/Student/pages/profilepage.dart';
-import 'package:signify/Student/pages/speechtotext.dart';
 
 class Commonpage extends StatefulWidget {
   const Commonpage({

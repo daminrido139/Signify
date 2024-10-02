@@ -1,4 +1,4 @@
-package com.example.signify
+package com.leviosa.app
 
 import io.flutter.embedding.android.FlutterActivity
 
