@@ -8,6 +8,8 @@ import 'package:signify/Student/models/imageai.dart';
 import 'package:signify/entry.dart';
 
 class ChatScreen extends StatefulWidget {
+  const ChatScreen({super.key});
+
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
@@ -24,7 +26,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _controller.dispose();
   }
@@ -209,14 +210,14 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           IconButton(
             icon: Icon(Icons.send, color: Colors.amber[600]),
-            onPressed: ismsgortxt == false ? _sendMessage : sentimagge,
+            onPressed: ismsgortxt == false ? _sendMessage : sentimagge(context),
           ),
         ],
       ),
     );
   }
 
-  sentimagge() async {
+  sentimagge(context) async {
     FocusScope.of(context).unfocus();
     setState(() {
       isloadingimg = true;
@@ -255,7 +256,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   duration: const Duration(milliseconds: 200),
                   child: frame != null
                       ? child
-                      : SizedBox(
+                      : const SizedBox(
                           height: 60,
                           width: 60,
                           child: CircularProgressIndicator(strokeWidth: 6),
