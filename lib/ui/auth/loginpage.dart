@@ -1,8 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:signify/app_router.dart';
+import 'package:signify/router_constants.dart';
+import 'package:signify/services/auth_service.dart';
 import 'package:signify/ui/Student/commonpage.dart';
 
-class Loginpage extends StatelessWidget {
+class Loginpage extends StatefulWidget {
   const Loginpage({super.key});
+
+  @override
+  State<Loginpage> createState() => _LoginpageState();
+}
+
+class _LoginpageState extends State<Loginpage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +52,15 @@ class Loginpage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  customTextfield("Email"),
+                  emailTextField(),
                   const SizedBox(
                     height: 7,
                   ),
-                  customTextfield("Password"),
+                  passwordTextField(),
                   const SizedBox(
                     height: 45,
                   ),
-                  custombutton(context),
+                  custombutton(),
                   const SizedBox(
                     height: 40,
                   ),
@@ -100,15 +119,15 @@ class Loginpage extends StatelessWidget {
     );
   }
 
-  Widget customTextfield(String subtittle) {
+  Widget emailTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 25),
           child: Text(
-            subtittle,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+            "Email",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
           ),
         ),
         const SizedBox(
@@ -136,6 +155,7 @@ class Loginpage extends StatelessWidget {
                     ]),
               ),
               child: TextField(
+                controller: emailController,
                 obscureText: true,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
@@ -153,11 +173,76 @@ class Loginpage extends StatelessWidget {
     );
   }
 
-  Widget custombutton(BuildContext context) {
+  Widget passwordTextField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 25),
+          child: Text(
+            "Password",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                gradient: const LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    stops: [
+                      0.1,
+                      0.5,
+                      0.7,
+                      0.9
+                    ],
+                    colors: [
+                      Color.fromRGBO(228, 247, 211, 1),
+                      Color.fromARGB(255, 234, 240, 206),
+                      Color.fromARGB(255, 243, 215, 197),
+                      Color.fromARGB(255, 219, 228, 243)
+                    ]),
+              ),
+              child: TextField(
+                controller: passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: const BorderSide(color: Colors.black),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: const BorderSide(color: Colors.black),
+                  ),
+                ),
+              ),
+            )),
+      ],
+    );
+  }
+
+  Widget custombutton() {
     return InkWell(
-      onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const Commonpage()));
+      onTap: () async {
+        try {
+          await AuthService.signInWithEmailAndPassword(
+              emailController.text.trim(), passwordController.text.trim());
+          context.go(RouterConstants.commonPageRoute);
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                e.toString(),
+              ),
+            ),
+          );
+        }
       },
       child: Container(
         height: 60,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:signify/ui/HR/Work.dart';
 import 'package:signify/ui/Parent/Work.dart';
 
-import 'package:signify/auth/createaccount.dart';
+import 'package:signify/ui/auth/createaccount.dart';
 
 import 'package:signify/ui/Teacher/commonpage.dart';
 

@@ -1,10 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:signify/app_router.dart';
+import 'package:signify/firebase_options.dart';
 import 'package:signify/models/imageai.dart';
 
-import 'package:signify/entry.dart';
-
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   // Gemini.init(
   //     apiKey: const String.fromEnvironment(
   //         'AIzaSyAfCKcnsK08BZ_ddwm2KPvuUdvzJ5lqBkA'),
@@ -22,7 +27,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (create) => HomeProvider()),
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
+        routerConfig: appRouter,
         builder: (context, child) {
           return MediaQuery(
             data: MediaQuery.of(context)
@@ -36,7 +42,6 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-        home: const EntryPage(),
       ),
     );
   }
