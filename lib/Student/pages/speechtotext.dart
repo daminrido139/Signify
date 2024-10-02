@@ -2,17 +2,18 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:translator/translator.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
-class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+class Speechtotext extends StatefulWidget {
+  const Speechtotext({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<Speechtotext> createState() => _SpeechtotextState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _SpeechtotextState extends State<Speechtotext> {
   String label = "Listening for a Indian Sign...";
-  String gujarati = "ભારતીય નિશાની સાંભળી રહ્યા છીએ...";
   String confidence = "";
   CameraController? cameraController;
   List<CameraDescription>? _availableCameras;
@@ -24,19 +25,10 @@ class _HomepageState extends State<Homepage> {
   bool flash = true;
   String selectedLang = "English";
   final List<CameraImage> recordFrames = [];
-  GoogleTranslator translator = GoogleTranslator();
-  List<String> lst = [
-    "Zero",
-    "one",
-    "Two",
-    "Three",
-    "Four",
-    "Five",
-    "Six",
-    "Seven",
-    "Eight",
-    "Nine"
-  ];
+  SpeechToText _speechToText = SpeechToText();
+  bool _speechEnabled = false;
+  String _lastWords = '';
+  String finalword = '';
 
   void initCamera() async {
     _availableCameras = await availableCameras();
@@ -54,20 +46,6 @@ class _HomepageState extends State<Homepage> {
     } else {
       setCameraDirection(CameraLensDirection.front);
     }
-  }
-
-  Future talkToMe(String text) async {
-    // Create a tts object
-    FlutterTts flutterTts = FlutterTts();
-
-    // Set properties
-    flutterTts.setLanguage("en-US");
-    flutterTts.setVoice({"name": "Karen", "locale": "en-AU"});
-    flutterTts.setSpeechRate(0.6);
-    flutterTts.setPitch(1); // 0.5 - 1.5
-
-    // Speak
-    flutterTts.speak(text);
   }
 
   Future<void> toggleFlashlight() async {
@@ -110,15 +88,9 @@ class _HomepageState extends State<Homepage> {
     }
   }
 
-  void trans(String txt) async {
-    gujarati = await translator.translate(txt, to: 'gu').then((v) {
-      return v.toString();
-    });
-    setState(() {});
-  }
-
   @override
   void initState() {
+    initSpeech();
     initCamera();
     super.initState();
   }
@@ -129,116 +101,150 @@ class _HomepageState extends State<Homepage> {
     super.dispose();
   }
 
+  void initSpeech() async {
+    _speechEnabled = await _speechToText.initialize();
+    setState(() {});
+  }
+
+  /// Each time to start a speech recognition session
+  void startListening() async {
+    await _speechToText.listen(onResult: _onSpeechResult);
+    setState(() {});
+  }
+
+  /// Manually stop the active speech recognition session
+  /// Note that there are also timeouts that each platform enforces
+  /// and the SpeechToText plugin supports setting timeouts on the
+  /// listen method.
+  void stopListening() async {
+    await _speechToText.stop();
+    setState(() {});
+  }
+
+  /// This is the callback that the SpeechToText plugin calls when
+  /// the platform returns recognized words.
+  void _onSpeechResult(SpeechRecognitionResult result) {
+    setState(() {
+      _lastWords = result.recognizedWords;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.sizeOf(context).height;
     screenWidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sign To Text'),
+        toolbarHeight: 50,
+        title: const Text('Face reaction to Text'),
         backgroundColor: const Color.fromARGB(255, 233, 223, 190),
       ),
       backgroundColor:
           isRecording ? Colors.white : const Color.fromARGB(255, 233, 223, 190),
-      body: Column(
-        children: [
-          _cameraPreview(),
-          const SizedBox(
-            height: 15,
-          ),
-          isRecording == true
-              ? Center(
-                  child: SizedBox(
-                      height: screenHeight * 0.2,
-                      child: Image.asset("assets/img/bot.gif")),
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.only(right: 2),
-                            height: 35,
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: const Color(0xFFB6B1B1)),
-                              borderRadius: BorderRadius.circular(8),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _cameraPreview(),
+            const SizedBox(
+              height: 15,
+            ),
+            isRecording == true
+                ? Center(
+                    child: SizedBox(
+                        height: screenHeight * 0.2,
+                        child: Image.asset("assets/img/bot.gif")),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.only(right: 2),
+                              height: 35,
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: const Color(0xFFB6B1B1)),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              //alignment: Alignment.centerRight,
+                              child: DropdownButton(
+                                padding: const EdgeInsets.only(
+                                    left: 13, top: 6, bottom: 6, right: 8),
+                                underline: const SizedBox(),
+                                dropdownColor: Colors.white,
+                                value: selectedLang,
+                                iconSize: 19,
+                                borderRadius: BorderRadius.circular(20),
+                                icon: const Icon(Icons.keyboard_arrow_down),
+                                items: <String>["English", "Gujarti"]
+                                    .map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (val) {
+                                  selectedLang = val!;
+                                  setState(() {});
+                                },
+                              ),
                             ),
-                            //alignment: Alignment.centerRight,
-                            child: DropdownButton(
-                              padding: const EdgeInsets.only(
-                                  left: 13, top: 6, bottom: 6, right: 8),
-                              underline: const SizedBox(),
-                              dropdownColor: Colors.white,
-                              value: selectedLang,
-                              iconSize: 19,
-                              borderRadius: BorderRadius.circular(20),
-                              icon: const Icon(Icons.keyboard_arrow_down),
-                              items: <String>["English", "Gujarti"]
-                                  .map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              onChanged: (val) {
-                                selectedLang = val!;
-                                setState(() {});
-                              },
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () => talkToMe(label),
-                            child: Container(
-                              padding: const EdgeInsets.all(6),
-                              margin: const EdgeInsets.only(right: 10),
-                              decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Color.fromARGB(255, 233, 223, 190)),
-                              child: const Icon(Icons.volume_up),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      height: screenHeight * 0.18,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 15),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                              offset: const Offset(0, 3),
-                            ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                padding: const EdgeInsets.all(6),
+                                margin: const EdgeInsets.only(right: 10),
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color.fromARGB(255, 233, 223, 190)),
+                                child: const Icon(Icons.volume_up),
+                              ),
+                            )
                           ],
-                          border: Border.all(color: Colors.grey.shade300),
-                          borderRadius: BorderRadius.circular(5)),
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      child: SingleChildScrollView(
-                        child: SizedBox(
-                          child: Text(
-                            selectedLang == "English" ? label : gujarati,
-                            style: const TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.w500),
-                          ),
                         ),
                       ),
-                    )
-                  ],
-                ),
-        ],
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        height: screenHeight * 0.18,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                            border: Border.all(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.circular(5)),
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        child: SingleChildScrollView(
+                          child: SizedBox(
+                            height: screenHeight * 0.1,
+                            child: Center(
+                              child: Text(
+                                finalword,
+                                style: const TextStyle(
+                                    fontSize: 22, fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+          ],
+        ),
       ),
     );
   }
@@ -272,28 +278,17 @@ class _HomepageState extends State<Homepage> {
                   right: 0,
                   child: GestureDetector(
                     onTap: () async {
-                      if (isRecording) return;
-                      recordFrames.clear();
+                      // if (isRecording) return;
+                      // startListening();
                       setState(() {
                         isRecording = true;
                       });
-                      await Future.delayed(const Duration(seconds: 2));
-                      try {
-                        // label = await compute(CameraServices.predictGesture, [
-                        //   recordFrames,
-                        //   cameraController!.description.lensDirection
-                        // ]);
-                        /////////////////////////// only for video submission //////////
-                        await Future.delayed(
-                            const Duration(milliseconds: 1500));
-                        label = "How are you?";
-                      } catch (e) {
-                        label = "Turn on Internet Connection";
-                      }
+                      await Future.delayed(const Duration(seconds: 4));
+                      finalword = "Welcome to Leviosa";
+
                       isRecording = false;
+                      // stopListening();
                       setState(() {});
-                      trans(lst[int.parse(label)]);
-                      talkToMe(label);
                     },
                     child: (isRecording)
                         ? const _StopRecordIcon(Duration(seconds: 2))

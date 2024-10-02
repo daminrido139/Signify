@@ -1,11 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:signify/Student/models/imageai.dart';
 
 import 'package:signify/entry.dart';
 
@@ -16,9 +14,11 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
-  final List<Map<String, String>> _messages = [];
+  final List _messages = [];
   bool isloading = false;
   String text = "";
+  bool ismsgortxt = false;
+  bool isloadingimg = false;
 
   // Replace this with your actual API key
 
@@ -29,7 +29,7 @@ class _ChatScreenState extends State<ChatScreen> {
     _controller.dispose();
   }
 
-  void _sendMessage() async {
+  _sendMessage() async {
     FocusScope.of(context).unfocus();
 
     setState(() {
@@ -39,17 +39,17 @@ class _ChatScreenState extends State<ChatScreen> {
 
     if (text != "") {
       setState(() {
-        _messages.insert(0, {'text': text, 'sender': 'user'});
+        _messages.insert(0, {'text': text, 'sender': 'user', 'image': false});
       });
       setState(() {
         isloading = true;
       });
 
-      // Call Gemini AI API with the user input
       String aiResponse = await _fetchGeminiAIResponse(text);
 
       setState(() {
-        _messages.insert(0, {'text': aiResponse, 'sender': 'ai'});
+        _messages
+            .insert(0, {'text': aiResponse, 'sender': 'ai', "image": false});
       });
       setState(() {
         isloading = false;
@@ -75,7 +75,9 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 233, 223, 190),
       appBar: AppBar(
@@ -83,7 +85,7 @@ class _ChatScreenState extends State<ChatScreen> {
         leading: const BackButton(
           color: Colors.white,
         ),
-        title: GradientText(
+        title: const GradientText(
           "Leviosa ChatBot",
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           gradient: LinearGradient(
@@ -101,7 +103,7 @@ class _ChatScreenState extends State<ChatScreen> {
             height: 30,
             child: Image.asset("assets/img/chatbot_15320513.png"),
           ),
-          SizedBox(
+          const SizedBox(
             width: 20,
           )
         ],
@@ -115,17 +117,31 @@ class _ChatScreenState extends State<ChatScreen> {
               itemCount: _messages.length,
               itemBuilder: (context, index) {
                 bool isUserMessage = _messages[index]['sender'] == 'user';
-                return _buildChatBubble(
-                    _messages[index]['text']!, isUserMessage);
+                bool ismsg = _messages[index]['image'];
+                return ismsg == false
+                    ? _buildChatBubble(_messages[index]['text']!, isUserMessage)
+                    : customimagegen(_messages[index]["u18lst"]);
               },
             ),
           ),
           isloading == true
-              ? SizedBox(
+              ? Container(
                   height: 50,
                   width: 50,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white, width: 2),
+                      borderRadius: BorderRadius.circular(
+                        12.0,
+                      )),
                   child: Image.asset(
                       "assets/img/Ellipsis@1x-1.0s-200px-200px.gif"))
+              : const SizedBox(),
+          isloadingimg == true
+              ? SizedBox(
+                  height: 320,
+                  width: 320,
+                  child: Image.asset(
+                      "assets/img/Spinner@1x-1.0s-200px-200px (1).gif"))
               : const SizedBox(),
           _buildMessageInput(),
         ],
@@ -175,12 +191,84 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           const SizedBox(width: 10),
+          ismsgortxt == false
+              ? IconButton(
+                  onPressed: () {
+                    ismsgortxt = !ismsgortxt;
+                    setState(() {});
+                  },
+                  icon: const Icon(Icons.image))
+              : IconButton(
+                  onPressed: () {
+                    ismsgortxt = !ismsgortxt;
+                    setState(() {});
+                  },
+                  icon: const Icon(Icons.text_fields_outlined)),
+          const SizedBox(
+            width: 5,
+          ),
           IconButton(
             icon: Icon(Icons.send, color: Colors.amber[600]),
-            onPressed: _sendMessage,
+            onPressed: ismsgortxt == false ? _sendMessage : sentimagge,
           ),
         ],
       ),
     );
+  }
+
+  sentimagge() async {
+    FocusScope.of(context).unfocus();
+    setState(() {
+      isloadingimg = true;
+      text = _controller.text;
+    });
+    _controller.clear();
+    if (text != "") {
+      _messages.insert(0, {'text': text, 'sender': 'user', 'image': false});
+
+      await context.read<HomeProvider>().textToImage(text, context);
+      _messages.insert(0, {
+        "image": true,
+        "u18lst": Provider.of<HomeProvider>(context, listen: false).imageData!
+      });
+      setState(() {
+        isloadingimg = false;
+      });
+    }
+  }
+
+  customimagegen(img) {
+    return img != null
+        ? Container(
+            alignment: Alignment.center,
+            height: 320,
+            width: 320,
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.white, width: 2),
+                borderRadius: BorderRadius.circular(
+                  12.0,
+                )),
+            child: Image.memory(img,
+                frameBuilder: ((context, child, frame, wasSynchronouslyLoaded) {
+              if (wasSynchronouslyLoaded) return child;
+              return AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 200),
+                  child: frame != null
+                      ? child
+                      : SizedBox(
+                          height: 60,
+                          width: 60,
+                          child: CircularProgressIndicator(strokeWidth: 6),
+                        ));
+            })))
+        : Container(
+            alignment: Alignment.center,
+            height: 320,
+            width: 320,
+            decoration: BoxDecoration(
+                color: const Color(0xff424242),
+                borderRadius: BorderRadius.circular(
+                  12.0,
+                )));
   }
 }
