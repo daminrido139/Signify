@@ -63,7 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '607595355808',
     projectId: 'leviosa-b7b76',
     storageBucket: 'leviosa-b7b76.appspot.com',
-    iosBundleId: 'com.example.signify',
+    iosBundleId: 'com.leviosa.app',
   );
 
 }
