@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:signify/auth/loginpage.dart';
+import 'package:signify/ui/auth/loginpage.dart';
 
 class Createaccount extends StatelessWidget {
   const Createaccount({super.key});
