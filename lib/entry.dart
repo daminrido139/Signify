@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:signify/HR/Work.dart';
-import 'package:signify/Parent/Work.dart';
+import 'package:signify/ui/HR/Work.dart';
+import 'package:signify/ui/Parent/Work.dart';
 
-import 'package:signify/Student/auth/createaccount.dart';
+import 'package:signify/auth/createaccount.dart';
 
-import 'package:signify/Teacher/pages/commonpage.dart';
+import 'package:signify/ui/Teacher/commonpage.dart';
 
 class EntryPage extends StatelessWidget {
   const EntryPage({super.key});

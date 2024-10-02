@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:signify/Student/pages/individualchatpage.dart';
+import 'package:signify/ui/Student/individualchatpage.dart';
 import 'package:signify/entry.dart';
 
 class HomepageTeacher extends StatelessWidget {

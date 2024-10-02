@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:signify/Student/pages/commonpage.dart';
+import 'package:signify/auth/loginpage.dart';
 
-class Loginpage extends StatelessWidget {
-  const Loginpage({super.key});
+class Createaccount extends StatelessWidget {
+  const Createaccount({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +26,15 @@ class Loginpage extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      "Login",
+                      "Create Student Account",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 30,
+                        fontSize: 25,
                       ),
                     ),
+                  ),
+                  const SizedBox(
+                    height: 15,
                   ),
                   customTextfield("Email"),
                   const SizedBox(
@@ -39,57 +42,15 @@ class Loginpage extends StatelessWidget {
                   ),
                   customTextfield("Password"),
                   const SizedBox(
+                    height: 7,
+                  ),
+                  customTextfield("Confirm Password"),
+                  const SizedBox(
                     height: 45,
                   ),
                   custombutton(context),
                   const SizedBox(
-                    height: 40,
-                  ),
-                  Stack(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Divider(
-                          indent: 30,
-                          endIndent: 30,
-                        ),
-                      ),
-                      Positioned(
-                        left: 175,
-                        child: SizedBox(
-                            width: 30,
-                            height: 30,
-                            child: Image.asset("assets/img/asian-flower.png")),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      const SizedBox(
-                        width: 75,
-                      ),
-                      SizedBox(
-                          width: 40,
-                          height: 30,
-                          child: Image.asset("assets/img/facebook.png")),
-                      const SizedBox(
-                        width: 50,
-                      ),
-                      SizedBox(
-                          width: 50,
-                          height: 40,
-                          child: Image.asset("assets/img/google.png")),
-                      const SizedBox(
-                        width: 50,
-                      ),
-                      SizedBox(
-                          width: 50,
-                          height: 40,
-                          child: Image.asset("assets/img/twitter.png")),
-                    ],
+                    height: 45,
                   ),
                 ],
               ),
@@ -157,7 +118,7 @@ class Loginpage extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const Commonpage()));
+            MaterialPageRoute(builder: (context) => const Loginpage()));
       },
       child: Container(
         height: 60,
@@ -194,7 +155,7 @@ class Loginpage extends StatelessWidget {
             ),
         child: const Center(
             child: Text(
-          "Login",
+          "Create Account",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
         )),
       ),

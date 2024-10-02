@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:signify/Student/models/imageai.dart';
+import 'package:signify/models/imageai.dart';
 
 import 'package:signify/entry.dart';
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:signify/Teacher/pages/assignment.dart';
-import 'package:signify/Teacher/pages/calendar.dart';
-import 'package:signify/Teacher/pages/home.dart';
-import 'package:signify/Teacher/pages/profile.dart';
+import 'package:signify/ui/Teacher/assignment.dart';
+import 'package:signify/ui/Teacher/calendar.dart';
+import 'package:signify/ui/Teacher/home.dart';
+import 'package:signify/ui/Teacher/profile.dart';
 
 class CommonpageTeacher extends StatefulWidget {
   const CommonpageTeacher({super.key});

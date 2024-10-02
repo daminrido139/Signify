@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:signify/Student/pages/drawerpage.dart';
-import 'package:signify/Student/pages/homepage.dart';
-import 'package:signify/Student/pages/individualchatpage.dart';
-import 'package:signify/Student/pages/texttosign.dart';
+import 'package:signify/ui/Student/drawerpage.dart';
+import 'package:signify/ui/Student/homepage.dart';
+import 'package:signify/ui/Student/individualchatpage.dart';
+import 'package:signify/ui/Student/texttosign.dart';
 import 'package:signify/entry.dart';
 import 'package:signify/leviosaai.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
