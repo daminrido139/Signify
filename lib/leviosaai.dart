@@ -208,14 +208,14 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           IconButton(
             icon: Icon(Icons.send, color: Colors.amber[600]),
-            onPressed: ismsgortxt == false ? _sendMessage : sentimagge,
+            onPressed: ismsgortxt == false ? _sendMessage : sentimagge(context),
           ),
         ],
       ),
     );
   }
 
-  sentimagge() async {
+  sentimagge(context) async {
     FocusScope.of(context).unfocus();
     setState(() {
       isloadingimg = true;

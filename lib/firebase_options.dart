@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'leviosa-b7b76.appspot.com',
     iosBundleId: 'com.leviosa.app',
   );
+
 }

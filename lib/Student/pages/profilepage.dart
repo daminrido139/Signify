@@ -63,7 +63,7 @@ class Profilepage extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            customlogout(context)
+            customlogout(context, "Logout")
           ],
         ),
       ),
@@ -80,7 +80,7 @@ class Profilepage extends StatelessWidget {
     );
   }
 
-  Widget customlogout(BuildContext context) {
+  Widget customlogout(BuildContext context, text) {
     return InkWell(
       onTap: () {
         Navigator.pop(context);
@@ -96,10 +96,11 @@ class Profilepage extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: const Center(
+        child: Center(
             child: Text(
-          "Logout",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          text,
+          style:
+              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         )),
       ),
     );
@@ -203,7 +204,79 @@ class Profilepage extends StatelessWidget {
                       // foregroundColor: Colors.green
                       backgroundColor: Colors.blue[100],
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            elevation: 0,
+                            child: Container(
+                                height: 200,
+                                width: 300,
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    colors: [
+                                      Color.fromRGBO(228, 212, 156, 1),
+                                      Color.fromARGB(255, 233, 223, 190)
+                                    ],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                  // color:
+                                  //     const Color.fromARGB(255, 253, 249, 227),
+                                ),
+                                child: Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const CircleAvatar(
+                                            radius: 40,
+                                          ),
+                                          const SizedBox(
+                                            width: 20,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: SizedBox(
+                                                height: 30,
+                                                width: 100,
+                                                child: TextFormField(
+                                                  controller:
+                                                      TextEditingController(
+                                                    text: "Sachita R",
+                                                  ),
+                                                  style: const TextStyle(
+                                                    fontSize: 20,
+                                                  ),
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    enabledBorder:
+                                                        InputBorder.none,
+                                                  ),
+                                                )),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    customlogout(context, "Change Profile"),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                  ],
+                                )),
+                          );
+                        },
+                      );
+                    },
                     child: const Text(
                       "Edit Profile",
                       style: TextStyle(color: Colors.black),

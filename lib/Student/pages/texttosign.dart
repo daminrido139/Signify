@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cube/flutter_cube.dart';
 
 class Texttosign extends StatefulWidget {
   const Texttosign({super.key});
@@ -48,39 +49,50 @@ class _TexttosignState extends State<Texttosign> {
         ),
         body: Column(
           children: [
-            SizedBox(
-                height: 300,
-                width: MediaQuery.of(context).size.width,
-                child: data.isEmpty
-                    ? Image.asset(
-                        "assets/ISL_Gifs/stll.png",
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Center(
-                            child: Text(
-                              "Sry No Image Found....",
-                              style: TextStyle(
-                                fontSize: 24,
-                              ),
-                            ),
-                          );
-                        },
-                      )
-                    : Image.asset(
-                        "assets/ISL_Gifs/excited.gif",
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Center(
-                            child: Text(
-                              "Sry No Image Found....",
-                              style: TextStyle(
-                                fontSize: 24,
-                              ),
-                            ),
-                          );
-                        },
-                      )),
-            const Spacer(),
+            Expanded(
+              child: Container(
+                color: Colors.black,
+                child: Cube(
+                  onSceneCreated: (Scene scene) {
+                    scene.world.add(Object(fileName: 'assets/img/MaleLow.obj'));
+                    scene.camera.zoom = 20;
+                  },
+                ),
+              ),
+            ),
+            // SizedBox(
+            //     height: 300,
+            //     width: MediaQuery.of(context).size.width,
+            //     child: data.isEmpty
+            //         ? Image.asset(
+            //             "assets/ISL_Gifs/stll.png",
+            //             fit: BoxFit.cover,
+            //             errorBuilder: (context, error, stackTrace) {
+            //               return const Center(
+            //                 child: Text(
+            //                   "Sry No Image Found....",
+            //                   style: TextStyle(
+            //                     fontSize: 24,
+            //                   ),
+            //                 ),
+            //               );
+            //             },
+            //           )
+            //         : Image.asset(
+            //             "assets/ISL_Gifs/excited.gif",
+            //             fit: BoxFit.cover,
+            //             errorBuilder: (context, error, stackTrace) {
+            //               return const Center(
+            //                 child: Text(
+            //                   "Sry No Image Found....",
+            //                   style: TextStyle(
+            //                     fontSize: 24,
+            //                   ),
+            //                 ),
+            //               );
+            //             },
+            //           )),
+            // const Spacer(),
             if (!isFocus)
               Image.asset(
                 "assets/img/voice.png",
