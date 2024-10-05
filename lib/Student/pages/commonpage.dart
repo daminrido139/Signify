@@ -1,7 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:signify/Student/pages/chatpage.dart';
 import 'package:signify/ui/Student/assignment_page.dart';
+import 'package:signify/ui/Student/chat_page.dart';
 import 'package:signify/ui/Student/learning_page.dart';
 import 'package:signify/ui/Student/profile_page.dart';
 
