@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:signature/signature.dart';
 
-class Writtingpard extends StatelessWidget {
+class WritingPad extends StatelessWidget {
   final double? height;
-  const Writtingpard({super.key, this.height});
+  const WritingPad({super.key, this.height});
 
   @override
   Widget build(BuildContext context) {

@@ -15,4 +15,8 @@ class AuthService {
       rethrow;
     }
   }
+
+  static Future<void> logout() async {
+    await _firebaseAuth.signOut();
+  }
 }

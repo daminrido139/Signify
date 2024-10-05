@@ -82,9 +82,7 @@ class ProfilePageTeacher extends StatelessWidget {
 
   Widget customlogout(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.pop(context);
-      },
+      onTap: () {},
       child: Container(
         height: 50,
         width: 150,

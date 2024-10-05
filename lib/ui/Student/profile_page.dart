@@ -1,6 +1,9 @@
 // ignore_for_file: unnecessary_const
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:signify/router_constants.dart';
+import 'package:signify/services/auth_service.dart';
 
 class Profilepage extends StatelessWidget {
   const Profilepage({super.key});
@@ -82,8 +85,9 @@ class Profilepage extends StatelessWidget {
 
   Widget customlogout(BuildContext context, text) {
     return InkWell(
-      onTap: () {
-        Navigator.pop(context);
+      onTap: () async {
+        await AuthService.logout();
+        context.go(RouterConstants.loginRoute);
       },
       child: Container(
         height: 50,

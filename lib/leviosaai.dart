@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:provider/provider.dart';
 import 'package:signify/models/imageai.dart';
-
-import 'package:signify/entry.dart';
+import 'package:signify/widgets/common/gradient_text.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});

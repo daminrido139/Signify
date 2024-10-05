@@ -1,7 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:signify/router_constants.dart';
 import 'package:signify/services/auth_service.dart';
-import 'package:signify/ui/Student/commonpage.dart';
+import 'package:signify/ui/Student/call_page.dart';
+import 'package:signify/ui/Student/common_page.dart';
 import 'package:signify/ui/auth/loginpage.dart';
 
 final appRouter = GoRouter(
@@ -27,6 +28,16 @@ final appRouter = GoRouter(
       path: RouterConstants.commonPageRoute,
       name: RouterConstants.commonPageRoute,
       builder: (context, state) => const Commonpage(),
+    ),
+    GoRoute(
+      path: RouterConstants.callPage,
+      name: RouterConstants.callPage,
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        return CallPage(
+          callId: args["callId"],
+        );
+      },
     ),
   ],
 );

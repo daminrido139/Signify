@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:signify/ui/Student/drawerpage.dart';
-import 'package:signify/ui/Student/homepage.dart';
-import 'package:signify/ui/Student/individualchatpage.dart';
-import 'package:signify/ui/Student/texttosign.dart';
-import 'package:signify/entry.dart';
+import 'package:go_router/go_router.dart';
+import 'package:signify/router_constants.dart';
+import 'package:signify/ui/Student/drawer_page.dart';
+import 'package:signify/ui/Student/home_page.dart';
+import 'package:signify/ui/Student/individual_chat_page.dart';
+import 'package:signify/ui/Student/text_to_sign.dart';
 import 'package:signify/leviosaai.dart';
-import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
-import 'dart:math' as math;
-
-final String userid = math.Random().nextInt(10000).toString();
+import 'package:signify/widgets/common/gradient_text.dart';
+import 'package:signify/widgets/common/levi_button.dart';
 
 class Chatpage extends StatefulWidget {
   const Chatpage({super.key});
@@ -123,7 +122,22 @@ class _ChatpageState extends State<Chatpage> {
                               ),
                             ),
                             const Spacer(),
-                            customlogout(context, calling),
+                            LeviButton(
+                              child: const Text(
+                                "Join Meeting",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onTap: () {
+                                context.push(
+                                  RouterConstants.callPage,
+                                  extra: {
+                                    "callId": calling,
+                                  },
+                                );
+                              },
+                            ),
                             const SizedBox(
                               height: 15,
                             )
@@ -164,8 +178,8 @@ class _ChatpageState extends State<Chatpage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ChatScreen()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const ChatScreen()));
         },
         backgroundColor: const Color.fromARGB(255, 243, 227, 173),
         child: SizedBox(
@@ -306,50 +320,4 @@ Widget customlist(txt, subtxt, img, BuildContext context) {
   //     trailing: const Text("2.00 pm"),
   //   );
   // }
-}
-
-Widget customlogout(BuildContext context, calling) {
-  return InkWell(
-    onTap: () {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => CallPage(call: calling.text.toString())));
-    },
-    child: Container(
-      height: 50,
-      width: 150,
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color.fromRGBO(228, 212, 156, 1), Color(0xffad9c00)],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: const Center(
-          child: Text(
-        "Join Meeting",
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-      )),
-    ),
-  );
-}
-
-class CallPage extends StatelessWidget {
-  const CallPage({super.key, required this.call});
-
-  final String call;
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-        child: ZegoUIKitPrebuiltCall(
-            appID: 1808006113,
-            appSign:
-                "d13777c5023210bbe66bdb9688bcbe08eda8f6971c5522de36a6cc046ffb952d",
-            callID: call,
-            userID: userid,
-            userName: "userName$userid",
-            config: ZegoUIKitPrebuiltCallConfig.groupVideoCall()));
-  }
 }

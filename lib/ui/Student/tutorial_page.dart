@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:signify/ui/Student/writtingpard.dart';
+import 'package:signify/ui/Student/writing_pard.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class YoutubePlayerScreen extends StatefulWidget {
@@ -118,7 +118,7 @@ class _YoutubePlayerScreenState extends State<YoutubePlayerScreen> {
                     : Transform.flip(
                         flipX: true, child: CameraPreview(cameraController!))),
           ),
-          Expanded(child: Writtingpard(height: (height * 0.5))),
+          Expanded(child: WritingPad(height: (height * 0.5))),
         ];
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,

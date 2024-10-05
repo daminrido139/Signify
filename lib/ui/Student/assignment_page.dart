@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:signify/ui/Student/assignpost.dart';
-
-import 'package:signify/ui/Student/writtingpard.dart';
+import 'package:signify/ui/Student/assign_post.dart';
+import 'package:signify/ui/Student/writing_pard.dart';
 
 class Assignmentpage extends StatefulWidget {
   const Assignmentpage({super.key});
   static List pages = [
     const Assignpost(),
-    const Writtingpard(),
+    const WritingPad(),
   ];
 
   @override

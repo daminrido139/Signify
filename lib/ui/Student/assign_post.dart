@@ -49,13 +49,10 @@ class _AssignpostState extends State<Assignpost>
                 controller: tabController,
                 // padding: EdgeInsets.symmetric(horizontal: 28, vertical: 4),
                 indicator: BoxDecoration(
-                  // color: Colors.red[800],
                   borderRadius: BorderRadius.circular(20),
                 ),
                 labelColor: Colors.black,
                 dividerColor: Colors.transparent,
-                // dividerColor: Colors.black,
-                // ignore: prefer_const_literals_to_create_immutables
                 tabs: [
                   Tab(
                     child: Container(

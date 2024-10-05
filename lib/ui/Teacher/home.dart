@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:signify/ui/Student/individualchatpage.dart';
-import 'package:signify/entry.dart';
+import 'package:signify/ui/Student/individual_chat_page.dart';
+import 'package:signify/widgets/common/gradient_text.dart';
 
 class HomepageTeacher extends StatelessWidget {
   const HomepageTeacher({super.key});
