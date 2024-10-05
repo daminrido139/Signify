@@ -19,11 +19,12 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<dynamic> textToImage(String prompt, BuildContext context) async {
+  Future<void> textToImage(String prompt, BuildContext context) async {
     String engineId = "stable-diffusion-v1-6";
     String apiHost = 'https://api.stability.ai';
     String apiKey = 'sk-Urz8ZXKojoIdZJXaOZmARnpCjQuqXm9GEcMwK7kZwkKRdJoE';
     debugPrint(prompt);
+    print("hgbihuioho");
     final response = await http.post(
         Uri.parse('$apiHost/v1/generation/$engineId/text-to-image'),
         headers: {
@@ -44,6 +45,7 @@ class HomeProvider extends ChangeNotifier {
           "samples": 1,
           "steps": 30,
         }));
+    print("111111111111111");
 
     if (response.statusCode == 200) {
       try {

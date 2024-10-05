@@ -207,14 +207,16 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           IconButton(
             icon: Icon(Icons.send, color: Colors.amber[600]),
-            onPressed: ismsgortxt == false ? _sendMessage : sentimagge(context),
+            onPressed: ismsgortxt == false
+                ? () => _sendMessage()
+                : () => sentimagge(context),
           ),
         ],
       ),
     );
   }
 
-  sentimagge(context) async {
+  Future<void> sentimagge(context) async {
     FocusScope.of(context).unfocus();
     setState(() {
       isloadingimg = true;
@@ -224,7 +226,8 @@ class _ChatScreenState extends State<ChatScreen> {
     if (text != "") {
       _messages.insert(0, {'text': text, 'sender': 'user', 'image': false});
 
-      await context.read<HomeProvider>().textToImage(text, context);
+      await Provider.of<HomeProvider>(context, listen: false)
+          .textToImage(text, context);
       _messages.insert(0, {
         "image": true,
         "u18lst": Provider.of<HomeProvider>(context, listen: false).imageData!
