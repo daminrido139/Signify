@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:signify/ui/Student/writing_pard.dart';
+import 'package:signify/ui/Student/writing_pad.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class YoutubePlayerScreen extends StatefulWidget {

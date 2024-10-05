@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:signify/ui/Student/assign_post.dart';
-import 'package:signify/ui/Student/writing_pard.dart';
+import 'package:signify/ui/Student/writing_pad.dart';
 
 class Assignmentpage extends StatefulWidget {
   const Assignmentpage({super.key});
